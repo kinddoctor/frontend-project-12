@@ -1,6 +1,7 @@
 import {
   Formik, Form, Field,
 } from 'formik';
+import axios from 'axios';
 
 // валидация - что логинящийся юзер (его логин) есть в базе, и что его пароль соответствует логину
 
@@ -18,6 +19,14 @@ function LoginForm() {
                 <h1 className="mb-4">Войти</h1>
                 <Formik
                   initialValues={{ login: '', password: '' }}
+                  onSubmit={(values) => {
+                    axios.post('/api/v1/login', { username: values.login, password: values.password })
+                      .then(({ data }) => {
+                        localStorage.setItem('tokenJWT', data.token);
+                        console.log(`hey, token is here ---> ${localStorage.getItem('tokenJWT')}`);
+                      })
+                      .catch((error) => console.log(error));
+                  }}
                 >
                   {() => (
                     <Form className="d-flex flex-column align-items-center justify-content-center w-100">
