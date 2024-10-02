@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 function ErrorPage() {
   return (
     <div className="text-center">
@@ -5,7 +7,7 @@ function ErrorPage() {
       <h1 className="h3">Страница не найдена</h1>
       <p>
         {'Давайте вернемся на '}
-        главную страницу
+        <Link to="../login">главную страницу</Link>
       </p>
     </div>
   );

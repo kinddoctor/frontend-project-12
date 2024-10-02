@@ -22,10 +22,11 @@ function LoginForm() {
                   onSubmit={(values) => {
                     axios.post('/api/v1/login', { username: values.login, password: values.password })
                       .then(({ data }) => {
+                        console.log(`${data}`);
                         localStorage.setItem('tokenJWT', data.token);
                         console.log(`hey, token is here ---> ${localStorage.getItem('tokenJWT')}`);
                       })
-                      .catch((error) => console.log(error));
+                      .catch((error) => console.log(error.response.statusText));
                   }}
                 >
                   {() => (
