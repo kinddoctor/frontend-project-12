@@ -19,20 +19,21 @@ function LoginForm() {
                 <h1 className="mb-4">Войти</h1>
                 <Formik
                   initialValues={{ login: '', password: '' }}
-                  onSubmit={(values) => {
+                  onSubmit={(values, { setErrors }) => {
                     axios.post('/api/v1/login', { username: values.login, password: values.password })
                       .then(({ data }) => {
                         console.log(`${data}`);
                         localStorage.setItem('tokenJWT', data.token);
                         console.log(`hey, token is here ---> ${localStorage.getItem('tokenJWT')}`);
                       })
-                      .catch((error) => console.log(error.response.statusText));
+                      .catch((error) => setErrors({ submit: [error.response.statusText] }));
                   }}
                 >
-                  {() => (
+                  {(errors) => (
                     <Form className="d-flex flex-column align-items-center justify-content-center w-100">
                       <Field type="login" name="login" className="form-control d-block mb-3" placeholder="Ваш ник" />
                       <Field type="password" name="password" className="form-control mb-4" placeholder="Пароль" />
+                      {errors.submit ? <div> УПС </div> : null}
                       <button type="submit" className="w-100 mb-3 btn btn-dark">
                         Войти
                       </button>
