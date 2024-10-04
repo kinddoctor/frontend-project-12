@@ -1,11 +1,13 @@
 import {
   Formik, Form, Field,
 } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 // валидация - что логинящийся юзер (его логин) есть в базе, и что его пароль соответствует логину
 
 function LoginForm() {
+  const navigate = useNavigate();
   return (
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
@@ -25,6 +27,7 @@ function LoginForm() {
                         console.log(`${data}`);
                         localStorage.setItem('tokenJWT', data.token);
                         console.log(`hey, token is here ---> ${localStorage.getItem('tokenJWT')}`);
+                        navigate('/');
                       })
                       .catch((error) => setErrors({ submit: [error.response.statusText] }));
                   }}
