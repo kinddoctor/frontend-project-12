@@ -4,8 +4,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-// валидация - что логинящийся юзер (его логин) есть в базе, и что его пароль соответствует логину
-
 function LoginForm() {
   const navigate = useNavigate();
   return (
@@ -45,7 +43,7 @@ function LoginForm() {
                 </Formik>
               </div>
             </div>
-            <div className="p-3 text-center bg-warning-subtle border">
+            <div className="p-3 text-center bg-primary-subtle border">
               <p className="mb-1">
                 Нет аккаунта?
                 Регистрация
