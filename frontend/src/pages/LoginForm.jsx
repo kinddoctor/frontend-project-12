@@ -1,11 +1,15 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Formik, Form, Field,
 } from 'formik';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function LoginForm() {
+  const [authorizationError, setError] = useState(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
   return (
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
@@ -19,22 +23,20 @@ function LoginForm() {
                 <h1 className="mb-4">Войти</h1>
                 <Formik
                   initialValues={{ login: '', password: '' }}
-                  onSubmit={(values, { setErrors }) => {
+                  onSubmit={(values) => {
                     axios.post('/api/v1/login', { username: values.login, password: values.password })
                       .then(({ data }) => {
-                        console.log(`${data}`);
                         localStorage.setItem('tokenJWT', data.token);
-                        console.log(`hey, token is here ---> ${localStorage.getItem('tokenJWT')}`);
                         navigate('/');
                       })
-                      .catch((error) => setErrors({ submit: [error.response.statusText] }));
+                      .catch((error) => setError(error.response.statusText));
                   }}
                 >
-                  {(errors) => (
+                  {() => (
                     <Form className="d-flex flex-column align-items-center justify-content-center w-100">
                       <Field type="login" name="login" className="form-control d-block mb-3" placeholder="Ваш ник" />
                       <Field type="password" name="password" className="form-control mb-4" placeholder="Пароль" />
-                      {errors.submit ? <div> УПС </div> : null}
+                      {authorizationError ? <div className="alert alert-danger text-center" role="alert">{t(`errors.${authorizationError}`)}</div> : null}
                       <button type="submit" className="w-100 mb-3 btn btn-dark">
                         Войти
                       </button>

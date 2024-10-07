@@ -5,7 +5,7 @@ const resources = {
   ru: {
     translation: {
       errors: {
-        Unauthorized: 'Ошибка авторизации - неверный логин и/или пароль',
+        Unauthorized: 'Неверный логин и/или пароль!',
       },
     },
   },
