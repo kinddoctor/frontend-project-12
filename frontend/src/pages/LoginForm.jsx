@@ -8,6 +8,7 @@ import axios from 'axios';
 
 function LoginForm() {
   const [authorizationError, setError] = useState(null);
+  const setAuthorizationErrorToNull = () => setError(null);
   const navigate = useNavigate();
   const { t } = useTranslation();
   return (
@@ -33,7 +34,7 @@ function LoginForm() {
                   }}
                 >
                   {() => (
-                    <Form className="d-flex flex-column align-items-center justify-content-center w-100">
+                    <Form onChange={setAuthorizationErrorToNull} className="d-flex flex-column align-items-center justify-content-center w-100">
                       <Field type="login" name="login" className="form-control d-block mb-3" placeholder="Ваш ник" />
                       <Field type="password" name="password" className="form-control mb-4" placeholder="Пароль" />
                       {authorizationError ? <div className="alert alert-danger text-center" role="alert">{t(`errors.${authorizationError}`)}</div> : null}
