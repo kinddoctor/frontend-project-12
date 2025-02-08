@@ -13,5 +13,8 @@
   "dependencies": {
     "@hexlet/chat-server": "^2.0.3",
     "sass": "^1.78.0"
+  },
+  "devDependencies": {
+    "prettier": "3.4.2"
   }
 }
