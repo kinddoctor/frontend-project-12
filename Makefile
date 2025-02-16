@@ -9,8 +9,7 @@ develop:
 
 install:
 	npm ci
-	cd frontend && npm ci
 
 build:
-	rm -rf frontend/build
+	rm -rf /build
 	npm run build
