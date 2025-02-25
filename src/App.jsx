@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Layout from './pages/Layout';
 import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
 import Chat from './pages/Chat';
@@ -7,17 +8,16 @@ import './styles.scss';
 
 function App() {
   return (
-    <div className="App h-100">
-      <header className="App-header">This is header</header>
-      <BrowserRouter>
-        <Routes>
-          <Route path="*" element={<NotFound />} />
-          <Route path="/" element={<Chat />} />
-          <Route path="login" element={<LogIn />} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<LogIn />} />
           <Route path="signup" element={<SignUp />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+          <Route path="chat" element={<Chat />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

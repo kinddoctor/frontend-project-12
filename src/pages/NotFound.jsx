@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import NotFoundImg from '../assets/img/404.svg?react';
+import NotFoundImg from '../assets/img/404.svg';
 
 function ErrorPage() {
   return (
@@ -11,7 +11,7 @@ function ErrorPage() {
       <h1 className="h3">Страница не найдена</h1>
       <p>
         {'Давайте вернемся на '}
-        <Link to="../login">главную страницу</Link>
+        <Link to="../">главную страницу</Link>
       </p>
     </div>
   );
