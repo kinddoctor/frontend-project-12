@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/kinddoctor/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/kinddoctor/frontend-project-12/actions)",
   "main": "index.html",
+  "type": "module",
   "scripts": {
     "start": "vite",
     "build": "vite buld",
