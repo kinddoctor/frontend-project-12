@@ -6,6 +6,7 @@ function UniversalForm({
   handleSubmit,
   setAuthorizationErrorToNull,
   authorizationError,
+  needToConfirmPassword,
   imgSrc,
   footer,
 }) {
@@ -18,11 +19,7 @@ function UniversalForm({
           <div className="shadow">
             <div className="row p-4">
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img
-                  src={imgSrc}
-                  alt="conversation of two"
-                  className="img-fluid rounded w-auto"
-                />
+                <img src={imgSrc} alt="" className="img-fluid rounded w-auto" />
               </div>
               <div className="col-12 col-md-6 mt-3 mt-md-0 d-flex flex-column align-items-center justify-content-center">
                 <h1 className="mb-4">Войти</h1>
@@ -44,12 +41,20 @@ function UniversalForm({
                       <Field
                         type="password"
                         name="password"
-                        className="form-control mb-4"
+                        className="form-control mb-3"
                         placeholder="Пароль"
                       />
+                      {needToConfirmPassword && (
+                        <Field
+                          type="password"
+                          name="password"
+                          className="form-control mb-3"
+                          placeholder="Подтвердите пароль"
+                        />
+                      )}
                       {authorizationError ? (
                         <div
-                          className="alert alert-danger text-center"
+                          className="alert alert-danger text-center p-2"
                           role="alert"
                         >
                           {t(`errors.${authorizationError}`)}
@@ -57,7 +62,7 @@ function UniversalForm({
                       ) : null}
                       <button
                         type="submit"
-                        className="w-100 mb-3 fs-4 btn btn-dark"
+                        className="w-100 mt-1 fs-4 btn btn-dark"
                       >
                         Войти
                       </button>

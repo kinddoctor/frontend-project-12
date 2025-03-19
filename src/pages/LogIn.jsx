@@ -49,6 +49,7 @@ function LoginForm() {
       handleSubmit={(values) => handleSubmit(values)}
       setAuthorizationErrorToNull={setAuthorizationErrorToNull}
       authorizationError={authorizationError}
+      needToConfirmPassword={false}
       imgSrc={discussionImg}
       footer={loginFooter}
     />
