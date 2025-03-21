@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setCredentials } from '../redux/store/authSlice';
-import { useLoginMutation } from '../redux/api';
 
-import axios from 'axios';
+import { setError } from '../redux/store/authSlice';
+import sendAuthRequest from '../api/auth.service';
 import UniversalForm from '../components/UniversalForm';
 import discussionImg from '../assets/img/discussionImg.png';
 
 function LoginForm() {
-  const [authorizationError, setError] = useState(null);
-  const setAuthorizationErrorToNull = () => setError(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [login, { error }] = useLoginMutation();
+  const authorizationError = useSelector((state) => state.auth.error);
+  const clearAuthorizationError = () => dispatch(setError(''));
+
+  const handleSubmit = async ({ login: username, password }) => {
+    const autorize = () => navigate('/chat');
+    await sendAuthRequest(dispatch, { username, password }, autorize);
+  };
 
   const loginFooter = (
     <p className="mb-1 fs-5">
@@ -24,30 +27,10 @@ function LoginForm() {
     </p>
   );
 
-  const handleSubmit = async (values) => {
-    console.log(values);
-    const token = await login(values);
-    console.log(token);
-    // axios
-    //   .post('/api/v1/login', {
-    //     username: values.login,
-    //     password: values.password,
-    //   })
-    //   .then(({ data }) => {
-    //     localStorage.setItem('tokenJWT', data.token);
-    //     console.log(JSON.stringify(data.token));
-    //     navigate('/');
-    //   })
-    //   .catch((error) => {
-    //     setError(error.response.statusText);
-    //     throw error;
-    //   });
-  };
-
   return (
     <UniversalForm
       handleSubmit={(values) => handleSubmit(values)}
-      setAuthorizationErrorToNull={setAuthorizationErrorToNull}
+      clearAuthorizationError={clearAuthorizationError}
       authorizationError={authorizationError}
       needToConfirmPassword={false}
       imgSrc={discussionImg}

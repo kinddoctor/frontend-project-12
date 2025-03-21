@@ -4,7 +4,7 @@ import { Formik, Form, Field } from 'formik';
 
 function UniversalForm({
   handleSubmit,
-  setAuthorizationErrorToNull,
+  clearAuthorizationError,
   authorizationError,
   needToConfirmPassword,
   imgSrc,
@@ -29,7 +29,7 @@ function UniversalForm({
                 >
                   {() => (
                     <Form
-                      onChange={() => setAuthorizationErrorToNull}
+                      onChange={clearAuthorizationError}
                       className="d-flex flex-column align-items-center justify-content-center w-100"
                     >
                       <Field
