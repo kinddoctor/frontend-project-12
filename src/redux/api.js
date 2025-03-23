@@ -12,14 +12,10 @@ export const api = createApi({
     },
   }),
   endpoints: (builder) => ({
-    login: builder.mutation({
-      query: (credentials) => ({
-        url: '/login',
-        method: 'POST',
-        body: credentials,
-      }),
+    getChannels: builder.query({
+      query: () => 'channels',
     }),
   }),
 });
 
-export const { useLoginMutation } = api;
+export const { useGetChannelsQuery } = api;
