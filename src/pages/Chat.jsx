@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { setToken } from '../redux/store/authSlice';
+import { useGetChannelsQuery } from '../redux/api';
 
 function ChatPage() {
-  const hasToken = Object.prototype.hasOwnProperty.call(localStorage, 'tokenJWT');
   const navigate = useNavigate();
-  if (!hasToken) {
+  const dispatch = useDispatch();
+
+  const token = localStorage.getItem('tokenJWT');
+  if (!token) {
     useEffect(() => {
       navigate('/login');
     });
   } else {
-    return (
-      <div>
-        YOU MADE IT!
-      </div>
-    );
+    dispatch(setToken(token));
   }
 }
 

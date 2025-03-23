@@ -3,11 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: { username: '', token: '', error: '' },
+  initialState: { token: '', error: '' },
   reducers: {
-    setCredentials: (state, { payload: { username, token } }) => {
-      state.username = username;
-      state.token = token;
+    setToken: (state, { payload }) => {
+      state.token = payload;
     },
     setError: (state, { payload }) => {
       state.error = payload;
@@ -15,6 +14,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, setError } = authSlice.actions;
+export const { setToken, setError } = authSlice.actions;
 
 export default authSlice.reducer;
