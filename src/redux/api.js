@@ -15,7 +15,10 @@ export const api = createApi({
     getChannels: builder.query({
       query: () => 'channels',
     }),
+    getMessages: builder.query({
+      query: () => 'messages',
+    }),
   }),
 });
 
-export const { useGetChannelsQuery } = api;
+export const { useGetChannelsQuery, useGetMessagesQuery } = api;
