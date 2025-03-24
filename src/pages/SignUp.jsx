@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import UniversalForm from '../components/UniversalForm';
-import table from '../assets/img/tablePic.jpeg';
+import book from '../assets/img/book.jpeg';
 
 // import * as Yup from 'yup';
 // скачай yup в папку frontend
@@ -29,7 +29,7 @@ export default function SignUp() {
       setAuthorizationErrorToNull={() => console.log(1)}
       authorizationError={null}
       needToConfirmPassword
-      imgSrc={table}
+      imgSrc={book}
       footer={signupFooter}
     />
   );
