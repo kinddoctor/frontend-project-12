@@ -58,7 +58,10 @@ function ChatPage() {
           ))}
         </div>
         <div className="col-9">
-          <ChannelChat channelName={activeChannel?.name} messages={activeChannelMessages} />
+          <ChannelChat
+            channelName={activeChannel?.name || 'Загружаем...'}
+            messages={activeChannelMessages}
+          />
         </div>
       </div>
     </div>
