@@ -14,7 +14,7 @@ function LoginForm() {
   const clearAuthorizationError = () => dispatch(setError(''));
 
   const handleSubmit = async ({ login: username, password }) => {
-    const autorize = () => navigate('/chat');
+    const autorize = () => navigate('/');
     await sendAuthRequest(dispatch, { username, password }, autorize);
   };
 

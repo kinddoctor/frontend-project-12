@@ -19,48 +19,46 @@ function ChatPage() {
   }
 
   const { data: channels } = useGetChannelsQuery();
-  const chatChannels = channels ?? [];
   const { data: messages } = useGetMessagesQuery();
   const [activeChannel, setActiveChannel] = useState(null);
   const [activeChannelMessages, setActiveChannelMessages] = useState([]);
 
-  const handleChatClick = (channel) => {
+  const handleChannelChange = (channel) => {
     setActiveChannel(channel);
     setActiveChannelMessages(
-      messages
-        .filter(({ channelId }) => channelId === activeChannel.id)
-        .map(({ body }) => body),
+      messages.filter(({ channelId }) => channelId === activeChannel.id).map(({ body }) => body),
     );
   };
+
+  useEffect(() => {
+    if (activeChannel) {
+      return;
+    }
+    if (!activeChannel && channels && messages) {
+      const defaultActiveChannel = channels.filter((chan) => chan.name === 'general')[0];
+      handleChannelChange(defaultActiveChannel);
+    }
+  }, [channels]);
 
   return (
     <div className="container h-75 my-5 border shadow">
       <div className="row h-100">
         <div className="col-3 h-100 px-5 py-4 bg-primary-subtle border-end">
           <div className="row mb-4 fs-4 fw-medium">Каналы</div>
-          {chatChannels.map(({ name, id }) => (
+          {channels?.map((channel) => (
             <button
-              key={id}
+              key={channel.id}
               type="button"
               className="fs-5 fw-normal btn btn-outline-dark border-0"
-              onClick={() => handleChatClick({ name, id })}
+              onClick={() => handleChannelChange(channel)}
             >
               &#9993;
-              {name}
+              {channel.name}
             </button>
           ))}
         </div>
         <div className="col-9">
-          {activeChannel ? (
-            <ChannelChat
-              channelName={activeChannel.name}
-              messages={activeChannelMessages}
-            />
-          ) : (
-            <div className="p-5 fs-4">
-              <p>Тут будут выводится сообщения из каналов...</p>
-            </div>
-          )}
+          <ChannelChat channelName={activeChannel?.name} messages={activeChannelMessages} />
         </div>
       </div>
     </div>
