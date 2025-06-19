@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setToken } from '../redux/store/authSlice';
-import { useGetChannelsQuery, useGetMessagesQuery } from '../redux/api';
+import { useGetChannelsQuery, useGetMessagesQuery, useSendMessageMutation } from '../redux/api';
 import ChannelChat from '../components/ChannelChat';
 
 function ChatPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [sendMessage] = useSendMessageMutation();
+  const username = useSelector((state) => state.auth.data.username);
 
   const token = localStorage.getItem('tokenJWT');
   if (!token) {
@@ -23,11 +25,12 @@ function ChatPage() {
   const [activeChannel, setActiveChannel] = useState(null);
   const [activeChannelMessages, setActiveChannelMessages] = useState([]);
 
+  const getActiveChannelMessages = () =>
+    messages?.filter(({ channelId }) => channelId === activeChannel?.id);
+
   const handleChannelChange = (channel) => {
     setActiveChannel(channel);
-    setActiveChannelMessages(
-      messages.filter(({ channelId }) => channelId === activeChannel.id).map(({ body }) => body),
-    );
+    setActiveChannelMessages(getActiveChannelMessages());
   };
 
   useEffect(() => {
@@ -39,6 +42,8 @@ function ChatPage() {
       handleChannelChange(defaultActiveChannel);
     }
   }, [channels]);
+
+  useEffect(() => setActiveChannelMessages(getActiveChannelMessages()), [messages]);
 
   return (
     <div className="container h-75 my-5 border shadow">
@@ -59,8 +64,11 @@ function ChatPage() {
         </div>
         <div className="col-9">
           <ChannelChat
-            channelName={activeChannel?.name || 'Загружаем...'}
+            username={username}
+            channelName={activeChannel?.name}
+            channelId={activeChannel?.id}
             messages={activeChannelMessages}
+            sendMessageHandler={sendMessage}
           />
         </div>
       </div>
