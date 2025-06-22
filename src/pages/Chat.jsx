@@ -42,13 +42,13 @@ function ChatPage() {
   return (
     <div className="container h-75 my-5 border shadow">
       <div className="row h-100">
-        <div className="col-3 h-100 px-5 py-4 bg-primary-subtle border-end">
-          <div className="row mb-4 fs-4 fw-medium">Каналы</div>
+        <div className="col-3 h-100 px-1 py-4 bg-primary-subtle border-end">
+          <div className="d-none d-sm-block w-100 text-center mb-4 fs-4 fw-medium">Каналы</div>
           {channels?.map((channel) => (
             <button
               key={channel.id}
               type="button"
-              className="fs-5 fw-normal btn btn-outline-dark border-0"
+              className="w-100 fs-6 fw-normal btn btn-outline-dark border-0"
               onClick={() => setActiveChannelId(channel.id)}
             >
               &#9993;
