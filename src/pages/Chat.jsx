@@ -23,28 +23,21 @@ function ChatPage() {
 
   const { data: channels } = useGetChannelsQuery();
   const { data: messages } = useGetMessagesQuery();
-  const [activeChannel, setActiveChannel] = useState(null);
-  const [activeChannelMessages, setActiveChannelMessages] = useState([]);
+  const [activeChannelId, setActiveChannelId] = useState(null);
 
+  const getActiveChannel = () => channels?.filter((chan) => chan.id === activeChannelId)[0];
   const getActiveChannelMessages = () =>
-    messages?.filter(({ channelId }) => channelId === activeChannel?.id);
-
-  const handleChannelChange = (channel) => {
-    setActiveChannel(channel);
-    setActiveChannelMessages(getActiveChannelMessages());
-  };
+    messages?.filter(({ channelId }) => channelId === activeChannelId);
 
   useEffect(() => {
-    if (activeChannel) {
+    if (activeChannelId) {
       return;
     }
-    if (!activeChannel && channels && messages) {
-      const defaultActiveChannel = channels.filter((chan) => chan.name === 'general')[0];
-      handleChannelChange(defaultActiveChannel);
+    if (!activeChannelId && channels) {
+      const defaultActiveChannelId = channels.filter((chan) => chan.name === 'general')[0].id;
+      setActiveChannelId(defaultActiveChannelId);
     }
   }, [channels]);
-
-  useEffect(() => setActiveChannelMessages(getActiveChannelMessages()), [messages]);
 
   return (
     <div className="container h-75 my-5 border shadow">
@@ -56,7 +49,7 @@ function ChatPage() {
               key={channel.id}
               type="button"
               className="fs-5 fw-normal btn btn-outline-dark border-0"
-              onClick={() => handleChannelChange(channel)}
+              onClick={() => setActiveChannelId(channel.id)}
             >
               &#9993;
               {channel.name}
@@ -66,9 +59,9 @@ function ChatPage() {
         <div className="col-9">
           <ChannelChat
             username={username}
-            channelName={activeChannel?.name}
-            channelId={activeChannel?.id}
-            messages={activeChannelMessages}
+            channelName={getActiveChannel()?.name}
+            channelId={getActiveChannel()?.id}
+            messages={getActiveChannelMessages()}
             sendMessageHandler={sendMessage}
           />
         </div>
