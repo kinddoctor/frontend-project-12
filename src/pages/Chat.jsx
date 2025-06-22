@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setToken } from '../redux/store/authSlice';
+import { setData } from '../redux/store/authSlice';
 import { useGetChannelsQuery, useGetMessagesQuery, useSendMessageMutation } from '../redux/api';
 import ChannelChat from '../components/ChannelChat';
 
@@ -11,13 +11,14 @@ function ChatPage() {
   const [sendMessage] = useSendMessageMutation();
   const username = useSelector((state) => state.auth.data.username);
 
-  const token = localStorage.getItem('tokenJWT');
+  const token = localStorage.getItem('ChattyChat token');
   if (!token) {
     useEffect(() => {
       navigate('/login');
     });
   } else {
-    dispatch(setToken(token));
+    const previousUsername = localStorage.getItem('ChattyChat username');
+    dispatch(setData({ token, username: previousUsername }));
   }
 
   const { data: channels } = useGetChannelsQuery();

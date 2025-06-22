@@ -9,9 +9,6 @@ const authSlice = createSlice({
       state.data.username = username;
       state.data.token = token;
     },
-    setToken: (state, { payload }) => {
-      state.data.token = payload;
-    },
     setError: (state, { payload }) => {
       state.error = payload;
     },

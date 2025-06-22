@@ -6,7 +6,8 @@ export default async function sendAuthRequest(dispatch, { username, password }, 
     const {
       data: { token },
     } = await axios.post('/api/v1/login', { username, password });
-    localStorage.setItem('tokenJWT', token);
+    localStorage.setItem('ChattyChat token', token);
+    localStorage.setItem('ChattyChat username', username);
     dispatch(setData({ username, token }));
     autorize();
   } catch (error) {
