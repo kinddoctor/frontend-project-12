@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 
 export default function ChannelChat({
   currentUser,
@@ -7,8 +7,13 @@ export default function ChannelChat({
   messages = [],
   sendMessageHandler,
 }) {
-  // console.log(messages);
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef) {
+      inputRef.current.focus();
+    }
+  }, [channelName]);
 
   return (
     <div className="d-flex flex-column justify-content-between h-100 pb-4">
