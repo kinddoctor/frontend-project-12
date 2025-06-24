@@ -13,8 +13,8 @@ function UniversalForm({
   const { t } = useTranslation();
 
   return (
-    <div className="container-fluid h-100">
-      <div className="row justify-content-center align-content-center h-100">
+    <div className="container-fluid h-75">
+      <div className="row justify-content-center align-content-end h-100">
         <div className="col-10 col-xl-6">
           <div className="shadow">
             <div className="row p-4">
@@ -53,17 +53,11 @@ function UniversalForm({
                         />
                       )}
                       {authorizationError ? (
-                        <div
-                          className="alert alert-danger text-center p-2"
-                          role="alert"
-                        >
+                        <div className="alert alert-danger text-center p-2" role="alert">
                           {t(`errors.${authorizationError}`)}
                         </div>
                       ) : null}
-                      <button
-                        type="submit"
-                        className="w-100 mt-1 fs-4 btn btn-dark"
-                      >
+                      <button type="submit" className="w-100 mt-1 fs-4 btn btn-dark">
                         Войти
                       </button>
                     </Form>
@@ -71,9 +65,7 @@ function UniversalForm({
                 </Formik>
               </div>
             </div>
-            <div className="p-3 text-center bg-primary-subtle border">
-              {footer}
-            </div>
+            <div className="p-3 text-center bg-primary-subtle border">{footer}</div>
           </div>
         </div>
       </div>
