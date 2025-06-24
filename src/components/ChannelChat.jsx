@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 
 export default function ChannelChat({
-  username,
+  currentUser,
   channelName = 'Загружаем...',
   channelId,
   messages = [],
@@ -33,7 +33,7 @@ export default function ChannelChat({
         />
         <button
           onClick={() => {
-            const newMessage = { body: inputRef.current.value, channelId, username };
+            const newMessage = { body: inputRef.current.value, channelId, username: currentUser };
             sendMessageHandler(newMessage);
             inputRef.current.value = '';
           }}
