@@ -17,9 +17,11 @@ export default function ChannelChat({
         <span>{`${messages.length} сообщений`}</span>
       </div>
       <div className="h-100 p-4">
-        {messages.map(({ body, username }) => (
+        {messages.map(({ body, username, id }) => (
           <div>
-            <span className="fw-medium">{username}: </span>
+            <span key={id} className="fw-medium">
+              {`${username}: `}
+            </span>
             {body}
           </div>
         ))}

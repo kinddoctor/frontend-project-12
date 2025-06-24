@@ -2,8 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setData } from '../redux/store/authSlice';
-import { useGetChannelsQuery, useGetMessagesQuery, useSendMessageMutation } from '../redux/api';
+import {
+  useGetChannelsQuery,
+  useGetMessagesQuery,
+  useSendMessageMutation,
+  useAddChannelMutation,
+} from '../redux/api';
 import ChannelChat from '../components/ChannelChat';
+import AppModal from '../components/AppModal';
 
 function ChatPage() {
   const navigate = useNavigate();
@@ -39,11 +45,23 @@ function ChatPage() {
     }
   }, [channels]);
 
+  const [showModal, setShowModal] = useState(null);
+  const handleCloseModal = () => setShowModal(null);
+
   return (
     <div className="container h-75 my-sm-5 border shadow">
       <div className="row h-100">
         <div className="col-3 col-xl-2 h-100 px-1 py-4 bg-primary-subtle border-end">
-          <div className="d-none d-sm-block w-100 text-center mb-4 fs-4 fw-medium">Каналы</div>
+          <div className="d-flex justify-content-around w-100 text-center mb-4 fs-4 fw-medium">
+            <span className="d-none d-sm-block">Каналы</span>
+            <button
+              onClick={() => setShowModal('addChannelModal')}
+              type="button"
+              className="btn btn-dark"
+            >
+              +
+            </button>
+          </div>
           {channels?.map((channel) => (
             <button
               key={channel.id}
@@ -70,6 +88,11 @@ function ChatPage() {
           />
         </div>
       </div>
+      <AppModal
+        show={showModal}
+        handleClose={handleCloseModal}
+        handleModalAction={useAddChannelMutation}
+      />
     </div>
   );
 }

@@ -19,6 +19,27 @@ export const api = createApi({
   endpoints: (builder) => ({
     getChannels: builder.query({
       query: () => 'channels',
+      async onCacheEntryAdded(arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
+        await cacheDataLoaded;
+        socket.on('newChannel', (payload) => {
+          updateCachedData((draft) => {
+            draft.push(payload);
+          });
+        });
+        socket.on('removeChannel', ({ id }) => {
+          updateCachedData((draft) => {
+            draft.filter((item) => item.id !== id);
+          });
+        });
+        socket.on('renameChannel', (payload) => {
+          updateCachedData((draft) => {
+            draft.filter((item) => item.id !== payload.id);
+            draft.push(payload);
+          });
+        });
+        await cacheEntryRemoved;
+        socket.disconnect();
+      },
     }),
     getMessages: builder.query({
       query: () => 'messages',
@@ -40,6 +61,13 @@ export const api = createApi({
         body: message,
       }),
     }),
+    addChannel: builder.mutation({
+      query: (channel) => ({
+        url: 'channels',
+        method: 'POST',
+        body: channel,
+      }),
+    }),
   }),
 });
 
@@ -56,4 +84,9 @@ socket.on('disconnect', () => {
 //   api.endpoints.getMessages.initiate();
 // });
 
-export const { useGetChannelsQuery, useGetMessagesQuery, useSendMessageMutation } = api;
+export const {
+  useGetChannelsQuery,
+  useGetMessagesQuery,
+  useSendMessageMutation,
+  useAddChannelMutation,
+} = api;

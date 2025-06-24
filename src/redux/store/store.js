@@ -7,6 +7,5 @@ export default configureStore({
     [api.reducerPath]: api.reducer,
     auth: authReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
 });
