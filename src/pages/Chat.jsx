@@ -41,6 +41,7 @@ function ChatPage() {
     messages?.filter(({ channelId }) => channelId === activeChannelId);
 
   // set default channel for first render and when active channel was deleted
+  // make newly added channel the active one
   useEffect(() => {
     if ((!activeChannelId || !getActiveChannel()) && channels) {
       const defaultActiveChannelId = channels.filter((chan) => chan.name === 'general')[0].id;
@@ -102,6 +103,7 @@ function ChatPage() {
           newAddedChannelName.current = data.name;
           addChannel(data);
         }}
+        channelsNames={channels?.map(({ name }) => name)}
       />
     </div>
   );

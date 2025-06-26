@@ -3,14 +3,15 @@ import Modal from 'react-bootstrap/Modal';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
-const SignupSchema = Yup.object().shape({
-  channelName: Yup.string()
-    .min(3, 'Слишком короткое название!')
-    .max(20, 'Слишком длинное название!')
-    .required('Введите название канала'),
-});
+export default function AppModal({ show, handleClose, handleModalAction, channelsNames = [] }) {
+  const SignupSchema = Yup.object().shape({
+    channelName: Yup.string()
+      .min(3, 'Слишком короткое название!')
+      .max(20, 'Слишком длинное название!')
+      .notOneOf(channelsNames, 'Такой канал уже существует!')
+      .required('Введите название канала'),
+  });
 
-export default function AppModal({ show, handleClose, handleModalAction }) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
