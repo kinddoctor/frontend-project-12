@@ -11,8 +11,6 @@ const SignupSchema = Yup.object().shape({
 });
 
 export default function AppModal({ show, handleClose, handleModalAction }) {
-  const [addChannel] = handleModalAction();
-
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -27,8 +25,7 @@ export default function AppModal({ show, handleClose, handleModalAction }) {
               }}
               validationSchema={SignupSchema}
               onSubmit={(values) => {
-                addChannel({ name: values.channelName });
-                console.log(values.channelName);
+                handleModalAction({ name: values.channelName });
                 handleClose();
               }}
             >

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setData } from '../redux/store/authSlice';
@@ -14,8 +14,6 @@ import AppModal from '../components/AppModal';
 function ChatPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [sendMessage] = useSendMessageMutation();
-  const username = useSelector((state) => state.auth.data.username);
 
   const token = localStorage.getItem('ChattyChat token');
   if (!token) {
@@ -23,30 +21,39 @@ function ChatPage() {
       navigate('/login');
     });
   } else {
-    const previousUsername = localStorage.getItem('ChattyChat username');
-    dispatch(setData({ token, username: previousUsername }));
+    const currentUsername = localStorage.getItem('ChattyChat username');
+    dispatch(setData({ token, username: currentUsername }));
   }
 
+  const [sendMessage] = useSendMessageMutation();
+  const [addChannel] = useAddChannelMutation();
   const { data: channels } = useGetChannelsQuery();
   const { data: messages } = useGetMessagesQuery();
+  const username = useSelector((state) => state.auth.data.username);
+
   const [activeChannelId, setActiveChannelId] = useState(null);
+  const newAddedChannelName = useRef(null);
+  const [showModal, setShowModal] = useState(null);
+  const handleCloseModal = () => setShowModal(null);
 
   const getActiveChannel = () => channels?.filter((chan) => chan.id === activeChannelId)[0];
   const getActiveChannelMessages = () =>
     messages?.filter(({ channelId }) => channelId === activeChannelId);
 
+  // set default channel for first render and when active channel was deleted
   useEffect(() => {
-    if (activeChannelId) {
-      return;
-    }
-    if (!activeChannelId && channels) {
+    if ((!activeChannelId || !getActiveChannel()) && channels) {
       const defaultActiveChannelId = channels.filter((chan) => chan.name === 'general')[0].id;
       setActiveChannelId(defaultActiveChannelId);
     }
+    if (newAddedChannelName.current) {
+      const newActiveChannelId = channels.filter(
+        (chan) => chan.name === newAddedChannelName.current,
+      )[0].id;
+      setActiveChannelId(newActiveChannelId);
+      newAddedChannelName.current = null;
+    }
   }, [channels]);
-
-  const [showModal, setShowModal] = useState(null);
-  const handleCloseModal = () => setShowModal(null);
 
   return (
     <div className="container h-75 my-sm-5 border shadow">
@@ -91,7 +98,10 @@ function ChatPage() {
       <AppModal
         show={showModal}
         handleClose={handleCloseModal}
-        handleModalAction={useAddChannelMutation}
+        handleModalAction={(data) => {
+          newAddedChannelName.current = data.name;
+          addChannel(data);
+        }}
       />
     </div>
   );
