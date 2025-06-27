@@ -23,7 +23,7 @@ export default function ChannelChat({
       </div>
       <div className="h-100 p-4">
         {messages.map(({ body, username, id }) => (
-          <div>
+          <div className="text-break">
             <span key={id} className="fw-medium">
               {`${username}: `}
             </span>
@@ -31,24 +31,26 @@ export default function ChannelChat({
           </div>
         ))}
       </div>
-      <div className="input-group">
-        <input
-          ref={inputRef}
-          className="form-control"
-          placeholder="Введите сообщение"
-          aria-label="Your message"
-        />
-        <button
-          onClick={() => {
+      <div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
             const newMessage = { body: inputRef.current.value, channelId, username: currentUser };
             sendMessageHandler(newMessage);
             inputRef.current.value = '';
           }}
-          type="submit"
-          className="btn btn-outline-secondary"
+          className="input-group"
         >
-          Отправить
-        </button>
+          <input
+            ref={inputRef}
+            className="form-control"
+            placeholder="Введите сообщение"
+            aria-label="Your message"
+          />
+          <button type="submit" className="btn btn-outline-secondary">
+            Отправить
+          </button>
+        </form>
       </div>
     </div>
   );

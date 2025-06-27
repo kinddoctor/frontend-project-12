@@ -34,7 +34,7 @@ export default function AppModal({ show, handleClose, handleModalAction, channel
                 <Form>
                   <Field name="channelName" className="form-control" />
                   {errors.channelName && touched.channelName ? (
-                    <div>{errors.channelName}</div>
+                    <div className="text-danger">{errors.channelName}</div>
                   ) : null}
                   <div className="d-flex justify-content-end gap-3 pt-4">
                     <button type="submit" className="btn btn-primary">

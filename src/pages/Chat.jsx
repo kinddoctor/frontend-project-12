@@ -74,15 +74,10 @@ function ChatPage() {
             <button
               key={channel.id}
               type="button"
-              className={
-                channel.id === activeChannelId
-                  ? 'w-100 fs-6 fw-normal btn border-0 btn-dark'
-                  : 'w-100 fs-6 fw-normal btn border-0'
-              }
+              className={`w-100 fs-6 fw-normal text-start text-break btn border-0 ${channel.id === activeChannelId ? 'btn-dark' : ''}`}
               onClick={() => setActiveChannelId(channel.id)}
             >
-              &#9993;
-              {channel.name}
+              {`# ${channel.name}`}
             </button>
           ))}
         </div>
