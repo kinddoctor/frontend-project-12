@@ -28,18 +28,40 @@ export const api = createApi({
         });
         socket.on('removeChannel', ({ id }) => {
           updateCachedData((draft) => {
-            draft.filter((item) => item.id !== id);
+            const itemToRemove = draft.findIndex((item) => item.id === id);
+            draft.splice(itemToRemove, 1);
           });
         });
         socket.on('renameChannel', (payload) => {
           updateCachedData((draft) => {
-            draft.filter((item) => item.id !== payload.id);
+            const itemToRemove = draft.findIndex((item) => item.id === payload.id);
+            draft.splice(itemToRemove, 1);
             draft.push(payload);
           });
         });
         await cacheEntryRemoved;
         socket.disconnect();
       },
+    }),
+    addChannel: builder.mutation({
+      query: (channel) => ({
+        url: 'channels',
+        method: 'POST',
+        body: channel,
+      }),
+    }),
+    renameChannel: builder.mutation({
+      query: ({ name, id }) => ({
+        url: `channels/${id}`,
+        method: 'PATCH',
+        body: { name },
+      }),
+    }),
+    deleteChannel: builder.mutation({
+      query: (id) => ({
+        url: `channels/${id}`,
+        method: 'DELETE',
+      }),
     }),
     getMessages: builder.query({
       query: () => 'messages',
@@ -61,13 +83,6 @@ export const api = createApi({
         body: message,
       }),
     }),
-    addChannel: builder.mutation({
-      query: (channel) => ({
-        url: 'channels',
-        method: 'POST',
-        body: channel,
-      }),
-    }),
   }),
 });
 
@@ -86,7 +101,9 @@ socket.on('disconnect', () => {
 
 export const {
   useGetChannelsQuery,
+  useAddChannelMutation,
+  useRenameChannelMutation,
+  useDeleteChannelMutation,
   useGetMessagesQuery,
   useSendMessageMutation,
-  useAddChannelMutation,
 } = api;

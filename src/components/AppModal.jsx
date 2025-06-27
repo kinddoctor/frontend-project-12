@@ -3,7 +3,19 @@ import Modal from 'react-bootstrap/Modal';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
-export default function AppModal({ show, handleClose, handleModalAction, channelsNames = [] }) {
+const modalData = {
+  addChannelModal: { title: 'Добавить канал' },
+  renameChannelModal: { title: 'Переименовать канал' },
+  deleteChannelModal: { title: 'Удалить канал' },
+};
+
+export default function AppModal({
+  showModal,
+  optionsChannelId = '',
+  handleClose,
+  handleModalAction,
+  channelsNames = [],
+}) {
   const SignupSchema = Yup.object().shape({
     channelName: Yup.string()
       .min(3, 'Слишком короткое название!')
@@ -13,12 +25,12 @@ export default function AppModal({ show, handleClose, handleModalAction, channel
   });
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={showModal} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Modal heading</Modal.Title>
+        <Modal.Title>{modalData[showModal]?.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {show === 'addChannelModal' ? (
+        {showModal === 'addChannelModal' || showModal === 'renameChannelModal' ? (
           <div>
             <Formik
               initialValues={{
@@ -26,7 +38,11 @@ export default function AppModal({ show, handleClose, handleModalAction, channel
               }}
               validationSchema={SignupSchema}
               onSubmit={(values) => {
-                handleModalAction({ name: values.channelName });
+                const data =
+                  showModal === 'addChannelModal'
+                    ? { name: values.channelName }
+                    : { name: values.channelName, id: optionsChannelId };
+                handleModalAction(data);
                 handleClose();
               }}
             >
@@ -38,7 +54,7 @@ export default function AppModal({ show, handleClose, handleModalAction, channel
                   ) : null}
                   <div className="d-flex justify-content-end gap-3 pt-4">
                     <button type="submit" className="btn btn-primary">
-                      Добавить канал
+                      Отправить
                     </button>
                     <button type="button" className="btn btn-secondary" onClick={handleClose}>
                       Закрыть
@@ -48,17 +64,27 @@ export default function AppModal({ show, handleClose, handleModalAction, channel
               )}
             </Formik>
           </div>
-        ) : null}
+        ) : (
+          <div className="text-center fs-5">Вы уверены?</div>
+        )}
       </Modal.Body>
 
-      {/* <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={handleClose}>
-          Save Changes
-        </Button>
-      </Modal.Footer> */}
+      {showModal === 'deleteChannelModal' ? (
+        <Modal.Footer>
+          <Button
+            variant="danger"
+            onClick={() => {
+              handleModalAction(optionsChannelId);
+              handleClose();
+            }}
+          >
+            Удалить
+          </Button>
+          <Button variant="secondary" onClick={handleClose}>
+            Закрыть
+          </Button>
+        </Modal.Footer>
+      ) : null}
     </Modal>
   );
 }
