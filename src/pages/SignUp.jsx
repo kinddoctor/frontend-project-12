@@ -27,7 +27,7 @@ export default function SignUp() {
   const [signupError, setSignupError] = useState(null);
 
   return (
-    <div className="container-fluid h-75">
+    <div className="container-fluid">
       <div className="row justify-content-center align-content-end h-100">
         <div className="col-10 col-xl-6">
           <div className="shadow">
