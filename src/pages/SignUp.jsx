@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -23,6 +23,7 @@ const schema = Yup.object().shape({
 
 export default function SignUp() {
   // const { t } = useTranslation();
+  const navigate = useNavigate();
   const [signupError, setSignupError] = useState(null);
 
   return (
@@ -39,9 +40,14 @@ export default function SignUp() {
                 <Formik
                   initialValues={{ username: '', password: '', re_password: '' }}
                   validationSchema={schema}
-                  onSubmit={({ username, password }, { resetForm }) => {
-                    sendSignupRequest({ username, password }, setSignupError);
-                    resetForm();
+                  onSubmit={async ({ username, password }, { resetForm }) => {
+                    try {
+                      await sendSignupRequest({ username, password });
+                      resetForm();
+                      navigate('/');
+                    } catch (e) {
+                      setSignupError(e);
+                    }
                   }}
                 >
                   {({ errors, touched }) => (
