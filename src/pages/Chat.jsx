@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { setData } from '../redux/store/authSlice';
 import {
   useGetChannelsQuery,
@@ -14,6 +15,7 @@ import ChannelChat from '../components/ChannelChat';
 import AppModal from '../components/AppModal';
 
 function ChatPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -80,7 +82,7 @@ function ChatPage() {
       <div className="row h-100">
         <div className="col-3 col-xl-2 h-100 px-1 py-4 bg-primary-subtle border-end">
           <div className="d-flex justify-content-around w-100 text-center mb-4 fs-4 fw-medium">
-            <span className="d-none d-sm-block">Каналы</span>
+            <span className="d-none d-sm-block">{t('chat.navbar.title')}</span>
             <button
               onClick={() => setShowModal('addChannelModal')}
               type="button"
@@ -127,7 +129,7 @@ function ChatPage() {
                             role="button"
                             className="dropdown-item"
                           >
-                            Удалить
+                            {t('chat.navbar.dropdown.delete')}
                           </a>
                         </li>
                         <li>
@@ -136,7 +138,7 @@ function ChatPage() {
                             role="button"
                             className="dropdown-item"
                           >
-                            Переименовать
+                            {t('chat.navbar.dropdown.rename')}
                           </a>
                         </li>
                       </ul>

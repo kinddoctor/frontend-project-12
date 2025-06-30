@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function ChannelChat({
   currentUser,
@@ -7,6 +8,7 @@ export default function ChannelChat({
   messages = [],
   sendMessageHandler,
 }) {
+  const { t } = useTranslation();
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -44,11 +46,11 @@ export default function ChannelChat({
           <input
             ref={inputRef}
             className="form-control"
-            placeholder="Введите сообщение"
+            placeholder={t('channelChat.placeholders.input')}
             aria-label="Your message"
           />
           <button type="submit" className="btn btn-outline-secondary">
-            Отправить
+            {t('channelChat.submitBtn')}
           </button>
         </form>
       </div>

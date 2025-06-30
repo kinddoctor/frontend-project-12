@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { setData } from '../redux/store/authSlice';
 
 export default function AppHeader({ authorized }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,10 +19,10 @@ export default function AppHeader({ authorized }) {
   return (
     <header className="h-auto fs-3 p-2 px-sm-5 py-sm-3 mb-md-5 border-bottom shadow">
       <nav className="navbar">
-        <span>Chatty chat</span>
+        <span>{t('header.name')}</span>
         {authorized ? (
           <button onClick={handleQuitBtnClick} type="button" className="btn btn-primary btn-lg">
-            Выйти
+            {t('header.logoutBtn')}
           </button>
         ) : null}
       </nav>

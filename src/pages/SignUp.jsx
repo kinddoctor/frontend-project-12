@@ -22,7 +22,7 @@ const schema = Yup.object().shape({
 });
 
 export default function SignUp() {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [signupError, setSignupError] = useState(null);
 
@@ -36,7 +36,7 @@ export default function SignUp() {
                 <img src={book} alt="" className="img-fluid rounded w-auto" />
               </div>
               <div className="col-12 col-md-6 mt-3 mt-md-0 d-flex flex-column align-items-center justify-content-center">
-                <h1 className="mb-4">Войти</h1>
+                <h1 className="mb-4">{t('signUp.title')}</h1>
                 <Formik
                   initialValues={{ username: '', password: '', re_password: '' }}
                   validationSchema={schema}
@@ -59,7 +59,7 @@ export default function SignUp() {
                         type="text"
                         name="username"
                         className="form-control d-block"
-                        placeholder="Ваш ник"
+                        placeholder={t('signUp.form.placeholders.username')}
                       />
                       {errors.username && touched.username ? (
                         <div className="text-danger mt-n3">{errors.username}</div>
@@ -68,7 +68,7 @@ export default function SignUp() {
                         type="password"
                         name="password"
                         className="form-control"
-                        placeholder="Пароль"
+                        placeholder={t('signUp.form.placeholders.password')}
                       />
                       {errors.password && touched.password ? (
                         <div className="text-danger">{errors.password}</div>
@@ -77,18 +77,18 @@ export default function SignUp() {
                         type="password"
                         name="re_password"
                         className="form-control"
-                        placeholder="Подтвердите пароль"
+                        placeholder={t('signUp.form.placeholders.re_password')}
                       />
                       {errors.re_password && touched.re_password ? (
                         <div className="text-danger">{errors.re_password}</div>
                       ) : null}
                       {signupError ? (
                         <div className="alert alert-danger text-center p-2" role="alert">
-                          {signupError.message}
+                          {t('errors.signupError')}
                         </div>
                       ) : null}
                       <button type="submit" className="w-100 mt-3 fs-4 btn btn-dark">
-                        Войти
+                        {t('signUp.form.submitBtn')}
                       </button>
                     </Form>
                   )}
@@ -97,9 +97,9 @@ export default function SignUp() {
             </div>
             <div className="p-3 text-center bg-primary-subtle border">
               <p className="mb-1 fs-5">
-                {'Уже есть аккаунт? '}
+                {t('signUp.footer.text')}
                 <Link className="text-info" to="/">
-                  Авторизоваться
+                  {t('signUp.footer.link')}
                 </Link>
               </p>
             </div>
