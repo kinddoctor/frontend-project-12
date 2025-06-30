@@ -1,36 +1,105 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import UniversalForm from '../components/UniversalForm';
+import { useTranslation } from 'react-i18next';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import sendSignupRequest from '../api/signup.service';
 import book from '../assets/img/book.jpeg';
 
-// import * as Yup from 'yup';
-// скачай yup в папку frontend
-
-// const LoginSchema = Yup.object().shape({
-//   login: Yup.string()
-//     .min(3, '')
-//     .max(70, 'Too Long!')
-//     .required('Required'),
-//   password: '',
-// });
+const schema = Yup.object().shape({
+  username: Yup.string()
+    .min(3, 'Слишком короткое имя!')
+    .max(20, 'Слишком длинное имя!')
+    .required('Введите имя'),
+  password: Yup.string().min(6, 'Слишком короткий пароль!').required('Введите пароль'),
+  re_password: Yup.string()
+    .required('Подтвердите пароль')
+    .test(
+      'repeat password',
+      'Не соответствует паролю!',
+      (value, context) => value === context.parent.password,
+    ),
+});
 
 export default function SignUp() {
-  const signupFooter = (
-    <p className="mb-1 fs-5">
-      {'Уже есть аккаунт? '}
-      <Link className="text-info" to="/">
-        Авторизоваться
-      </Link>
-    </p>
-  );
+  // const { t } = useTranslation();
+  const [signupError, setSignupError] = useState(null);
 
   return (
-    <UniversalForm
-      handleSubmit={() => console.log(1)}
-      setAuthorizationErrorToNull={() => console.log(1)}
-      authorizationError={null}
-      needToConfirmPassword
-      imgSrc={book}
-      footer={signupFooter}
-    />
+    <div className="container-fluid h-75">
+      <div className="row justify-content-center align-content-end h-100">
+        <div className="col-10 col-xl-6">
+          <div className="shadow">
+            <div className="row p-4">
+              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                <img src={book} alt="" className="img-fluid rounded w-auto" />
+              </div>
+              <div className="col-12 col-md-6 mt-3 mt-md-0 d-flex flex-column align-items-center justify-content-center">
+                <h1 className="mb-4">Войти</h1>
+                <Formik
+                  initialValues={{ username: '', password: '', re_password: '' }}
+                  validationSchema={schema}
+                  onSubmit={({ username, password }, { resetForm }) => {
+                    sendSignupRequest({ username, password }, setSignupError);
+                    resetForm();
+                  }}
+                >
+                  {({ errors, touched }) => (
+                    <Form
+                      onChange={() => setSignupError(null)}
+                      className="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
+                    >
+                      <Field
+                        type="text"
+                        name="username"
+                        className="form-control d-block"
+                        placeholder="Ваш ник"
+                      />
+                      {errors.username && touched.username ? (
+                        <div className="text-danger mt-n3">{errors.username}</div>
+                      ) : null}
+                      <Field
+                        type="password"
+                        name="password"
+                        className="form-control"
+                        placeholder="Пароль"
+                      />
+                      {errors.password && touched.password ? (
+                        <div className="text-danger">{errors.password}</div>
+                      ) : null}
+                      <Field
+                        type="password"
+                        name="re_password"
+                        className="form-control"
+                        placeholder="Подтвердите пароль"
+                      />
+                      {errors.re_password && touched.re_password ? (
+                        <div className="text-danger">{errors.re_password}</div>
+                      ) : null}
+                      {signupError ? (
+                        <div className="alert alert-danger text-center p-2" role="alert">
+                          {signupError.message}
+                        </div>
+                      ) : null}
+                      <button type="submit" className="w-100 mt-3 fs-4 btn btn-dark">
+                        Войти
+                      </button>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            </div>
+            <div className="p-3 text-center bg-primary-subtle border">
+              <p className="mb-1 fs-5">
+                {'Уже есть аккаунт? '}
+                <Link className="text-info" to="/">
+                  Авторизоваться
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
