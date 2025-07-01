@@ -98,7 +98,7 @@ export default function SignUp() {
             <div className="p-3 text-center bg-primary-subtle border">
               <p className="mb-1 fs-5">
                 {t('signUp.footer.text')}
-                <Link className="text-info" to="/">
+                <Link className="text-info" to="/login">
                   {t('signUp.footer.link')}
                 </Link>
               </p>

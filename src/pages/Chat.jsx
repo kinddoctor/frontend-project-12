@@ -96,7 +96,10 @@ function ChatPage() {
               <li key={channel.id}>
                 <div className="d-flex dropdown btn-group">
                   <button
-                    onClick={() => setActiveChannelId(channel.id)}
+                    onClick={() => {
+                      setActiveChannelId(channel.id);
+                      setShowChannelOptions(null);
+                    }}
                     type="button"
                     className={`w-100 fs-6 fw-normal text-start text-break btn border-0 ${channel.id === activeChannelId ? 'btn-dark' : ''}`}
                   >
