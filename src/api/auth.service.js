@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setData, setError } from '../redux/store/authSlice';
+import { setData, setError } from '../store/authSlice';
 
 export default async function sendAuthRequest(dispatch, { username, password }, autorize) {
   try {

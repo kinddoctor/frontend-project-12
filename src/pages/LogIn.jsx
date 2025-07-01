@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { Formik, Form, Field } from 'formik';
 
-import { setError } from '../redux/store/authSlice';
+import { setError } from '../store/authSlice';
 import sendAuthRequest from '../api/auth.service';
 import discussionImg from '../assets/img/discussionImg.png';
 

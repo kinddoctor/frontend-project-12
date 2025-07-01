@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { setData } from '../redux/store/authSlice';
+import { setData } from '../store/authSlice';
 
 export default function AppHeader({ authorized }) {
   const { t } = useTranslation();

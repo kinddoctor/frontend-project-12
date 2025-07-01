@@ -38,7 +38,7 @@ export default function ChannelChat({
             e.preventDefault();
             const newMessage = { body: inputRef.current.value, channelId, username: currentUser };
             sendMessage(newMessage)
-              .uwrap()
+              .unwrap()
               .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }));
             inputRef.current.value = '';
           }}

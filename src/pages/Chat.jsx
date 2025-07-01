@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { setData } from '../redux/store/authSlice';
+import { setData } from '../store/authSlice';
 import {
   useGetChannelsQuery,
   useRenameChannelMutation,
@@ -11,7 +11,7 @@ import {
   useAddChannelMutation,
   useGetMessagesQuery,
   useSendMessageMutation,
-} from '../redux/api';
+} from '../store/api';
 import ChannelChat from '../components/ChannelChat';
 import AppModal from '../components/AppModal';
 
