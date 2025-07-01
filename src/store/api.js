@@ -34,9 +34,9 @@ export const api = createApi({
         });
         socket.on('renameChannel', (payload) => {
           updateCachedData((draft) => {
-            const itemToRemove = draft.findIndex((item) => item.id === payload.id);
-            draft.splice(itemToRemove, 1);
-            draft.push(payload);
+            const itemToRename = draft.find((item) => item.id === payload.id);
+            const itemToRenameIndex = draft.indexOf(itemToRename);
+            draft[itemToRenameIndex] = { ...itemToRename, name: payload.name };
           });
         });
         await cacheEntryRemoved;
