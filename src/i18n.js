@@ -48,6 +48,16 @@ const resources = {
         deleteBtn: 'Удалить',
       },
       header: { name: 'Chatty Chat', logoutBtn: 'Выйти' },
+      toast: {
+        success: {
+          addChannel: 'Канал добавлен',
+          renameChannel: 'Канал переименован',
+          deleteChannel: 'Канал удален',
+        },
+        error: {
+          badNetwork: 'Проблемы с загрузкой данных - попробуйте еще раз позже',
+        },
+      },
       errors: {
         authorizationError: 'Неверный логин и/или пароль!',
         signupError: 'Такой пользователь уже существует!',

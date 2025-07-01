@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import sendSignupRequest from '../api/signup.service';
@@ -46,7 +47,10 @@ export default function SignUp() {
                       resetForm();
                       navigate('/');
                     } catch (e) {
-                      setSignupError(e);
+                      // eslint-disable-next-line no-unused-expressions
+                      e.response.status === 409
+                        ? setSignupError(e)
+                        : toast(t('toast.error.badNetwork'), { type: 'error' });
                     }
                   }}
                 >

@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { Formik, Form, Field } from 'formik';
 
 import { setError } from '../redux/store/authSlice';
@@ -13,12 +14,18 @@ function LoginForm() {
   const authorizationError = useSelector((state) => state.auth.error);
   const clearAuthorizationError = () => dispatch(setError(''));
 
+  const { t } = useTranslation();
+
   const handleSubmit = async ({ username, password }) => {
     const autorize = () => navigate('/');
-    await sendAuthRequest(dispatch, { username, password }, autorize);
+    try {
+      await sendAuthRequest(dispatch, { username, password }, autorize);
+    } catch (e) {
+      if (e.response.status !== 401) {
+        toast(t('toast.error.badNetwork'), { type: 'error' });
+      }
+    }
   };
-
-  const { t } = useTranslation();
 
   return (
     <div className="container-fluid">

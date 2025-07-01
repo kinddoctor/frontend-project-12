@@ -1,12 +1,13 @@
 import { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 export default function ChannelChat({
   currentUser,
   channelName = 'Загружаем...',
   channelId,
   messages = [],
-  sendMessageHandler,
+  sendMessage,
 }) {
   const { t } = useTranslation();
   const inputRef = useRef(null);
@@ -25,10 +26,8 @@ export default function ChannelChat({
       </div>
       <div className="h-100 p-4">
         {messages.map(({ body, username, id }) => (
-          <div className="text-break">
-            <span key={id} className="fw-medium">
-              {`${username}: `}
-            </span>
+          <div key={id} className="text-break">
+            <span className="fw-medium">{`${username}: `}</span>
             {body}
           </div>
         ))}
@@ -38,7 +37,9 @@ export default function ChannelChat({
           onSubmit={(e) => {
             e.preventDefault();
             const newMessage = { body: inputRef.current.value, channelId, username: currentUser };
-            sendMessageHandler(newMessage);
+            sendMessage(newMessage)
+              .uwrap()
+              .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }));
             inputRef.current.value = '';
           }}
           className="input-group"

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { setData } from '../redux/store/authSlice';
 import {
   useGetChannelsQuery,
@@ -67,11 +68,20 @@ function ChatPage() {
     switch (modal) {
       case 'addChannelModal':
         newAddedChannelName.current = data.name;
-        return addChannel(data);
+        return addChannel(data)
+          .unwrap()
+          .then(() => toast(t('toast.success.addChannel'), { type: 'success' }))
+          .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }));
       case 'renameChannelModal':
-        return renameChannel(data);
+        return renameChannel(data)
+          .unwrap()
+          .then(() => toast(t('toast.success.renameChannel'), { type: 'success' }))
+          .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }));
       case 'deleteChannelModal':
-        return deleteChannel(data);
+        return deleteChannel(data)
+          .unwrap()
+          .then(() => toast(t('toast.success.deleteChannel'), { type: 'success' }))
+          .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }));
       default:
         throw new Error('There is no modal action for these case!');
     }
@@ -158,20 +168,22 @@ function ChatPage() {
             channelName={getActiveChannel()?.name}
             channelId={getActiveChannel()?.id}
             messages={getActiveChannelMessages()}
-            sendMessageHandler={sendMessage}
+            sendMessage={sendMessage}
           />
         </div>
       </div>
-      <AppModal
-        showModal={showModal}
-        optionsChannelId={showChannelOptions}
-        handleClose={() => {
-          setShowChannelOptions(null);
-          handleCloseModal();
-        }}
-        handleModalAction={chooseModalAction(showModal)}
-        channelsNames={channels?.map(({ name }) => name)}
-      />
+      {showModal ? (
+        <AppModal
+          showModal={showModal}
+          optionsChannelId={showChannelOptions}
+          handleClose={() => {
+            setShowChannelOptions(null);
+            handleCloseModal();
+          }}
+          handleModalAction={chooseModalAction(showModal)}
+          channelsNames={channels?.map(({ name }) => name)}
+        />
+      ) : null}
     </div>
   );
 }
