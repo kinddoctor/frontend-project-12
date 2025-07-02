@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { cleanProfanity } from '../utils/common';
 
 export default function ChannelChat({
   currentUser,
@@ -36,7 +37,11 @@ export default function ChannelChat({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            const newMessage = { body: inputRef.current.value, channelId, username: currentUser };
+            const newMessage = {
+              body: cleanProfanity(inputRef.current.value),
+              channelId,
+              username: currentUser,
+            };
             sendMessage(newMessage)
               .unwrap()
               .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }));

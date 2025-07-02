@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { cleanProfanity } from '../utils/common';
 
 export default function AppModal({
   showModal,
@@ -37,8 +38,8 @@ export default function AppModal({
               onSubmit={(values) => {
                 const data =
                   showModal === 'addChannelModal'
-                    ? { name: values.channelName }
-                    : { name: values.channelName, id: optionsChannelId };
+                    ? { name: cleanProfanity(values.channelName) }
+                    : { name: cleanProfanity(values.channelName), id: optionsChannelId };
                 handleModalAction(data);
                 handleClose();
               }}
