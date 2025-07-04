@@ -44,14 +44,14 @@ export default function AppModal({
                 handleClose();
               }}
             >
-              {({ errors, touched }) => (
+              {({ errors, touched, isSubmitting }) => (
                 <Form>
                   <Field name="channelName" className="form-control" />
                   {errors.channelName && touched.channelName ? (
                     <div className="text-danger">{errors.channelName}</div>
                   ) : null}
                   <div className="d-flex justify-content-end gap-3 pt-4">
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" disabled={isSubmitting} className="btn btn-primary">
                       {t('modal.sendBtn')}
                     </button>
                     <button type="button" className="btn btn-secondary" onClick={handleClose}>
@@ -71,8 +71,10 @@ export default function AppModal({
         <Modal.Footer>
           <Button
             variant="danger"
-            onClick={() => {
+            onClick={(e) => {
+              e.target.setAttribute('disabled', '');
               handleModalAction(optionsChannelId);
+              e.target.removeAttribute('disabled', '');
               handleClose();
             }}
           >

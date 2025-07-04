@@ -16,8 +16,11 @@ function LoginForm() {
 
   const { t } = useTranslation();
 
-  const handleSubmit = async ({ username, password }) => {
-    const autorize = () => navigate('/');
+  const handleSubmit = async ({ username, password }, { resetForm }) => {
+    const autorize = () => {
+      resetForm();
+      navigate('/');
+    };
     try {
       await sendAuthRequest(dispatch, { username, password }, autorize);
     } catch (e) {
@@ -38,11 +41,8 @@ function LoginForm() {
               </div>
               <div className="col-12 col-md-6 mt-3 mt-md-0 d-flex flex-column align-items-center justify-content-center">
                 <h1 className="mb-4">{t('logIn.title')}</h1>
-                <Formik
-                  initialValues={{ username: '', password: '' }}
-                  onSubmit={(values) => handleSubmit(values)}
-                >
-                  {() => (
+                <Formik initialValues={{ username: '', password: '' }} onSubmit={handleSubmit}>
+                  {({ isSubmitting }) => (
                     <Form
                       onChange={clearAuthorizationError}
                       className="d-flex flex-column align-items-center justify-content-center w-100"
@@ -64,7 +64,11 @@ function LoginForm() {
                           {t('errors.authorizationError')}
                         </div>
                       ) : null}
-                      <button type="submit" className="w-100 mt-1 fs-4 btn btn-dark">
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-100 mt-1 fs-4 btn btn-dark"
+                      >
                         {t('logIn.form.submitBtn')}
                       </button>
                     </Form>

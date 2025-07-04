@@ -54,7 +54,7 @@ export default function SignUp() {
                     }
                   }}
                 >
-                  {({ errors, touched }) => (
+                  {({ errors, touched, isSubmitting }) => (
                     <Form
                       onChange={() => setSignupError(null)}
                       className="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
@@ -91,7 +91,11 @@ export default function SignUp() {
                           {t('errors.signupError')}
                         </div>
                       ) : null}
-                      <button type="submit" className="w-100 mt-3 fs-4 btn btn-dark">
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-100 mt-3 fs-4 btn btn-dark"
+                      >
                         {t('signUp.form.submitBtn')}
                       </button>
                     </Form>

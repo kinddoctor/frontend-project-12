@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { cleanProfanity } from '../utils/common';
@@ -12,6 +12,7 @@ export default function ChannelChat({
 }) {
   const { t } = useTranslation();
   const inputRef = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (inputRef) {
@@ -37,6 +38,7 @@ export default function ChannelChat({
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            setIsSubmitting(true);
             const newMessage = {
               body: cleanProfanity(inputRef.current.value),
               channelId,
@@ -46,6 +48,7 @@ export default function ChannelChat({
               .unwrap()
               .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }));
             inputRef.current.value = '';
+            setIsSubmitting(false);
           }}
           className="input-group"
         >
@@ -55,7 +58,7 @@ export default function ChannelChat({
             placeholder={t('channelChat.placeholders.input')}
             aria-label="Your message"
           />
-          <button type="submit" className="btn btn-outline-secondary">
+          <button type="submit" disabled={isSubmitting} className="btn btn-outline-secondary">
             {t('channelChat.submitBtn')}
           </button>
         </form>
