@@ -1,5 +1,5 @@
 {
-  "name": "@hexlet/code",
+  "name": "frontend",
   "private": true,
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/kinddoctor/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/kinddoctor/frontend-project-12/actions)",
@@ -15,6 +15,7 @@
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "@7.21.11",
     "@reduxjs/toolkit": "^2.6.1",
+    "@rollbar/react": "^0.12.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -33,6 +34,7 @@
     "react-router-dom": "^6.24.0",
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
+    "rollbar": "^2.26.4",
     "sass": "^1.78.0",
     "socket.io-client": "^4.8.1",
     "vite": "^6.1.0",
