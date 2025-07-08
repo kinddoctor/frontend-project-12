@@ -1,5 +1,22 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+const authRequest = async (path, body) => {
+  const { data } = await axios.post(`/api/v1/${path}`, body);
+  const { token, username } = data;
+  localStorage.setItem('ChattyChat token', token);
+  localStorage.setItem('ChattyChat username', username);
+  return data;
+};
+
+export const loginRequest = createAsyncThunk('auth/loginRequest', async (body) => {
+  await authRequest('login', body);
+});
+
+export const signupRequest = createAsyncThunk('auth/signupRequest', async (body) => {
+  await authRequest('signup', body);
+});
 
 const authSlice = createSlice({
   name: 'auth',
@@ -12,6 +29,23 @@ const authSlice = createSlice({
     setError: (state, { payload }) => {
       state.error = payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginRequest.fulfilled, (state, { payload }) => {
+        state.data = payload;
+        state.error = null;
+      })
+      .addCase(loginRequest.rejected, (state, { error }) => {
+        state.error = error;
+      })
+      .addCase(signupRequest.fulfilled, (state, { payload }) => {
+        state.data = payload;
+        state.error = null;
+      })
+      .addCase(signupRequest.rejected, (state, { error }) => {
+        state.error = error;
+      });
   },
 });
 

@@ -1,32 +1,44 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable consistent-return */
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { Formik, Form, Field } from 'formik';
-
-import { setError } from '../store/authSlice';
-import sendAuthRequest from '../api/auth.service';
+import { loginRequest, setError } from '../store/authSlice';
 import discussionImg from '../assets/img/discussionImg.png';
 
 function LoginForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const authorizationError = useSelector((state) => state.auth.error);
   const clearAuthorizationError = () => dispatch(setError(''));
 
-  const { t } = useTranslation();
+  const handleSubmit = async (values) => {
+    await dispatch(loginRequest(values))
+      .unwrap()
+      .then(() => {
+        clearAuthorizationError();
+        navigate('/');
+      });
+  };
 
-  const handleSubmit = async ({ username, password }, { resetForm }) => {
-    const autorize = () => {
-      resetForm();
-      navigate('/');
-    };
-    try {
-      await sendAuthRequest(dispatch, { username, password }, autorize);
-    } catch (e) {
-      if (e.response.status !== 401) {
-        toast(t('toast.error.badNetwork'), { type: 'error' });
-      }
+  const giveFeedBackIfError = () => {
+    if (!authorizationError) {
+      return;
+    }
+    switch (authorizationError.message) {
+      case 'Request failed with status code 401':
+        return (
+          <div className="alert alert-danger text-center p-2" role="alert">
+            {t('errors.authorizationError')}
+          </div>
+        );
+      default:
+        return toast(t('toast.error.badNetwork'), { type: 'error' });
     }
   };
 
@@ -59,11 +71,7 @@ function LoginForm() {
                         className="form-control mb-3"
                         placeholder={t('logIn.form.placeholders.password')}
                       />
-                      {authorizationError ? (
-                        <div className="alert alert-danger text-center p-2" role="alert">
-                          {t('errors.authorizationError')}
-                        </div>
-                      ) : null}
+                      {giveFeedBackIfError()}
                       <button
                         type="submit"
                         disabled={isSubmitting}
@@ -79,9 +87,16 @@ function LoginForm() {
             <div className="p-3 text-center bg-primary-subtle border">
               <p className="mb-1 fs-5">
                 {t('logIn.footer.text')}
-                <Link className="text-info" to="/signup">
+                <a
+                  onClick={() => {
+                    clearAuthorizationError();
+                    navigate('/signup');
+                  }}
+                  className="text-info"
+                  href="#"
+                >
                   {t('logIn.footer.link')}
-                </Link>
+                </a>
               </p>
             </div>
           </div>

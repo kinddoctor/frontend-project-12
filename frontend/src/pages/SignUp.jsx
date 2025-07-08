@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable consistent-return */
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import sendSignupRequest from '../api/signup.service';
+import { signupRequest, setError } from '../store/authSlice';
 import book from '../assets/img/book.jpeg';
 
 const schema = Yup.object().shape({
@@ -23,9 +25,36 @@ const schema = Yup.object().shape({
 });
 
 export default function SignUp() {
-  const { t } = useTranslation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [signupError, setSignupError] = useState(null);
+  const { t } = useTranslation();
+  const authorizationError = useSelector((state) => state.auth.error);
+  const clearAuthorizationError = () => dispatch(setError(''));
+
+  const handleSubmit = async (values) => {
+    await dispatch(signupRequest(values))
+      .unwrap()
+      .then(() => {
+        clearAuthorizationError();
+        navigate('/');
+      });
+  };
+
+  const giveFeedBackIfError = () => {
+    if (!authorizationError) {
+      return;
+    }
+    switch (authorizationError.message) {
+      case 'Request failed with status code 409':
+        return (
+          <div className="alert alert-danger text-center p-2" role="alert">
+            {t('errors.signupError')}
+          </div>
+        );
+      default:
+        return toast(t('toast.error.badNetwork'), { type: 'error' });
+    }
+  };
 
   return (
     <div className="container-fluid">
@@ -41,22 +70,11 @@ export default function SignUp() {
                 <Formik
                   initialValues={{ username: '', password: '', re_password: '' }}
                   validationSchema={schema}
-                  onSubmit={async ({ username, password }, { resetForm }) => {
-                    try {
-                      await sendSignupRequest({ username, password });
-                      resetForm();
-                      navigate('/');
-                    } catch (e) {
-                      // eslint-disable-next-line no-unused-expressions
-                      e.response.status === 409
-                        ? setSignupError(e)
-                        : toast(t('toast.error.badNetwork'), { type: 'error' });
-                    }
-                  }}
+                  onSubmit={handleSubmit}
                 >
                   {({ errors, touched, isSubmitting }) => (
                     <Form
-                      onChange={() => setSignupError(null)}
+                      onChange={() => clearAuthorizationError()}
                       className="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
                     >
                       <Field
@@ -86,11 +104,7 @@ export default function SignUp() {
                       {errors.re_password && touched.re_password ? (
                         <div className="text-danger">{errors.re_password}</div>
                       ) : null}
-                      {signupError ? (
-                        <div className="alert alert-danger text-center p-2" role="alert">
-                          {t('errors.signupError')}
-                        </div>
-                      ) : null}
+                      {giveFeedBackIfError()}
                       <button
                         type="submit"
                         disabled={isSubmitting}
@@ -106,9 +120,16 @@ export default function SignUp() {
             <div className="p-3 text-center bg-primary-subtle border">
               <p className="mb-1 fs-5">
                 {t('signUp.footer.text')}
-                <Link className="text-info" to="/login">
+                <a
+                  href="#"
+                  onClick={() => {
+                    clearAuthorizationError();
+                    navigate('/login');
+                  }}
+                  className="text-info"
+                >
                   {t('signUp.footer.link')}
-                </Link>
+                </a>
               </p>
             </div>
           </div>
