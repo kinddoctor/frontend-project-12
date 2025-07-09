@@ -10,13 +10,13 @@ const authRequest = async (path, body) => {
   return data;
 };
 
-export const loginRequest = createAsyncThunk('auth/loginRequest', async (body) => {
-  await authRequest('login', body);
-});
+export const loginRequest = createAsyncThunk('auth/loginRequest', async (body) =>
+  authRequest('login', body),
+);
 
-export const signupRequest = createAsyncThunk('auth/signupRequest', async (body) => {
-  await authRequest('signup', body);
-});
+export const signupRequest = createAsyncThunk('auth/signupRequest', async (body) =>
+  authRequest('signup', body),
+);
 
 const authSlice = createSlice({
   name: 'auth',
