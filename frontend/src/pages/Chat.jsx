@@ -88,9 +88,9 @@ function ChatPage() {
   };
 
   return (
-    <div className="container h-75 my-sm-5 border shadow">
-      <div className="row h-100">
-        <div className="col-3 col-xl-2 h-100 px-1 py-4 bg-primary-subtle border-end">
+    <div className="container h-100 my-5 border shadow overflow-hidden">
+      <div className="row h-100 flex-row">
+        <div className="col-3 col-xl-2 flex-column h-100 px-1 py-4 bg-primary-subtle border-end">
           <div className="d-flex justify-content-around w-100 text-center mb-4 fs-4 fw-medium">
             <span className="d-none d-sm-block">{t('chat.navbar.title')}</span>
             <button
@@ -101,9 +101,9 @@ function ChatPage() {
               +
             </button>
           </div>
-          <ul className="nav d-block">
+          <ul className="nav d-block flex-column overflow-auto h-100">
             {channels?.map((channel) => (
-              <li key={channel.id}>
+              <li className="nav-item" key={channel.id}>
                 <div className="d-flex dropdown btn-group">
                   <button
                     onClick={() => {
@@ -162,7 +162,7 @@ function ChatPage() {
             ))}
           </ul>
         </div>
-        <div className="col-9 col-xl-10">
+        <div className="col p-0 h-100 col-9 col-xl-10">
           <ChannelChat
             currentUser={username}
             channelName={getActiveChannel()?.name}

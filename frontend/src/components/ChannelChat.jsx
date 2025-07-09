@@ -21,12 +21,12 @@ export default function ChannelChat({
   }, [channelName]);
 
   return (
-    <div className="d-flex flex-column justify-content-between h-100 pb-4">
-      <div className="row p-3 shadow-sm bg-primary-subtle">
-        <span className="fw-medium">{channelName}</span>
+    <div className="d-flex flex-column h-100">
+      <div className="p-3 shadow-sm bg-primary-subtle">
+        <p className="fw-medium mb-0">{channelName}</p>
         <span>{`${messages.length} сообщений`}</span>
       </div>
-      <div className="h-100 p-4">
+      <div className="p-4 overflow-auto">
         {messages.map(({ body, username, id }) => (
           <div key={id} className="text-break">
             <span className="fw-medium">{`${username}: `}</span>
@@ -34,7 +34,7 @@ export default function ChannelChat({
           </div>
         ))}
       </div>
-      <div>
+      <div className="mt-auto px-5 py-3">
         <form
           onSubmit={(e) => {
             e.preventDefault();

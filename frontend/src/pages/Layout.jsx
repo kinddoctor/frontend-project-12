@@ -7,7 +7,7 @@ export default function Layout() {
   const authorized = useSelector((state) => state.auth.data.token);
 
   return (
-    <div className="h-100">
+    <div className="h-100 d-flex flex-column">
       <AppHeader authorized={authorized} />
       <Outlet />
       <ToastContainer />
