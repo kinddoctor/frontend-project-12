@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { setData } from '../store/authSlice';
+import selectors from '../store/selectors';
 import {
   useGetChannelsQuery,
   useRenameChannelMutation,
@@ -36,7 +37,7 @@ function ChatPage() {
   const [deleteChannel] = useDeleteChannelMutation();
   const { data: channels } = useGetChannelsQuery();
   const { data: messages } = useGetMessagesQuery();
-  const username = useSelector((state) => state.auth.data.username);
+  const username = useSelector(selectors.getUsername);
 
   const [activeChannelId, setActiveChannelId] = useState(null);
   const newAddedChannelName = useRef(null);

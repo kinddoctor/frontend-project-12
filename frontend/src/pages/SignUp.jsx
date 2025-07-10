@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { signupRequest, setError } from '../store/authSlice';
+import selectors from '../store/selectors';
 import book from '../assets/img/book.jpeg';
 
 const schema = Yup.object().shape({
@@ -28,7 +29,7 @@ export default function SignUp() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const authorizationError = useSelector((state) => state.auth.error);
+  const authorizationError = useSelector(selectors.getAuthorizationError);
   const clearAuthorizationError = () => dispatch(setError(''));
 
   const handleSubmit = async (values) => {

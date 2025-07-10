@@ -8,13 +8,14 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { Formik, Form, Field } from 'formik';
 import { loginRequest, setError } from '../store/authSlice';
+import selectors from '../store/selectors';
 import discussionImg from '../assets/img/discussionImg.png';
 
 function LoginForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const authorizationError = useSelector((state) => state.auth.error);
+  const authorizationError = useSelector(selectors.getAuthorizationError);
   const clearAuthorizationError = () => dispatch(setError(''));
 
   const handleSubmit = async (values) => {
