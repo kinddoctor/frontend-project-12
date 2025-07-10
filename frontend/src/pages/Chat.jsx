@@ -90,7 +90,7 @@ function ChatPage() {
   return (
     <div className="container h-100 my-5 border shadow overflow-hidden">
       <div className="row h-100 flex-row">
-        <div className="col-3 col-xl-2 flex-column h-100 px-1 py-4 bg-primary-subtle border-end">
+        <div className="col-3 col-xl-2 d-flex flex-column h-100 px-1 py-4 bg-primary-subtle border-end">
           <div className="d-flex justify-content-around w-100 text-center mb-4 fs-4 fw-medium">
             <span className="d-none d-sm-block">{t('chat.navbar.title')}</span>
             <button
@@ -133,7 +133,7 @@ function ChatPage() {
                         className={`dropdown-menu ${showChannelOptions === channel.id ? 'show' : ''} `}
                         style={{
                           position: 'absolute',
-                          inset: '40px -30px auto auto',
+                          inset: '40px 0px auto auto',
                         }}
                       >
                         <li>
