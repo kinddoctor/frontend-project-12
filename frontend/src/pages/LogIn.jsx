@@ -96,7 +96,7 @@ function LoginForm() {
                     navigate('/signup');
                   }}
                   className="text-info"
-                  href="#"
+                  href="/signup"
                 >
                   {t('logIn.footer.link')}
                 </a>
