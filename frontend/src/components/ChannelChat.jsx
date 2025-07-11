@@ -56,7 +56,7 @@ export default function ChannelChat({
             ref={inputRef}
             className="form-control"
             placeholder={t('channelChat.placeholders.input')}
-            aria-label="Your message"
+            aria-label="Новое сообщение"
           />
           <button type="submit" disabled={isSubmitting} className="btn btn-outline-secondary">
             {t('channelChat.submitBtn')}
