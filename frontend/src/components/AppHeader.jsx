@@ -17,9 +17,11 @@ export default function AppHeader({ authorized }) {
   };
 
   return (
-    <header className="h-auto fs-3 p-2 px-sm-5 py-sm-3 border-bottom shadow">
+    <header className="h-auto fs-3 py-1 px-2 px-sm-5 border-bottom shadow">
       <nav className="navbar">
-        <span>{t('header.name')}</span>
+        <a className="navbar-brand fs-3 m-0" href="#" onClick={() => navigate('/')}>
+          {t('header.link')}
+        </a>
         {authorized ? (
           <button onClick={handleQuitBtnClick} type="button" className="btn btn-primary btn-lg">
             {t('header.logoutBtn')}

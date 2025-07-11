@@ -5,14 +5,14 @@ const resources = {
   ru: {
     translation: {
       signUp: {
-        title: 'Войти',
+        title: 'Регистрация',
         form: {
           placeholders: {
-            username: 'Ваш ник',
+            username: 'Имя пользователя',
             password: 'Пароль',
             re_password: 'Подтвердите пароль',
           },
-          submitBtn: 'Войти',
+          submitBtn: 'Зарегистрироваться',
         },
         footer: { text: 'Уже есть аккаунт? ', link: 'Авторизоваться' },
       },
@@ -47,15 +47,15 @@ const resources = {
         closeBtn: 'Закрыть',
         deleteBtn: 'Удалить',
       },
-      header: { name: 'Chatty Chat', logoutBtn: 'Выйти' },
+      header: { link: 'Hexlet Chat', logoutBtn: 'Выйти' },
       toast: {
         success: {
-          addChannel: 'Канал добавлен',
+          addChannel: 'Канал создан',
           renameChannel: 'Канал переименован',
-          deleteChannel: 'Канал удален',
+          deleteChannel: 'Канал удалён',
         },
         error: {
-          badNetwork: 'Проблемы с загрузкой данных - попробуйте еще раз позже',
+          badNetwork: 'Ошибка соединения',
         },
       },
       fallbackUI: {
@@ -64,7 +64,7 @@ const resources = {
         btnText: 'перезагрузиться',
       },
       errors: {
-        authorizationError: 'Неверный логин и/или пароль!',
+        authorizationError: 'Неверные имя пользователя или пароль',
         signupError: 'Такой пользователь уже существует!',
       },
     },

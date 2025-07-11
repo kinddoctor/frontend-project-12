@@ -23,7 +23,7 @@ export default function AppModal({
   });
 
   return (
-    <Modal show={showModal} onHide={handleClose}>
+    <Modal show={showModal} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>{t(`modal.${showModal}.title`)}</Modal.Title>
       </Modal.Header>
@@ -47,6 +47,13 @@ export default function AppModal({
               {({ errors, touched, isSubmitting }) => (
                 <Form>
                   <Field name="channelName" className="form-control" />
+                  {showModal === 'addChannelModal' ? (
+                    <label class="visually-hidden" for="name">
+                      Имя канала
+                    </label>
+                  ) : (
+                    ''
+                  )}
                   {errors.channelName && touched.channelName ? (
                     <div className="text-danger">{errors.channelName}</div>
                   ) : null}

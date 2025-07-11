@@ -12,15 +12,15 @@ import book from '../assets/img/book.jpeg';
 
 const schema = Yup.object().shape({
   username: Yup.string()
-    .min(3, 'Слишком короткое имя!')
-    .max(20, 'Слишком длинное имя!')
+    .min(3, 'От 3 до 20 символов')
+    .max(20, 'От 3 до 20 символов')
     .required('Введите имя'),
-  password: Yup.string().min(6, 'Слишком короткий пароль!').required('Введите пароль'),
+  password: Yup.string().min(6, 'Не менее 6 символов').required('Введите пароль'),
   re_password: Yup.string()
     .required('Подтвердите пароль')
     .test(
       'repeat password',
-      'Не соответствует паролю!',
+      'Пароли должны совпадать',
       (value, context) => value === context.parent.password,
     ),
 });

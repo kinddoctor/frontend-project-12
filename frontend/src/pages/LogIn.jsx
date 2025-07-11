@@ -61,12 +61,14 @@ function LoginForm() {
                       className="d-flex flex-column align-items-center justify-content-center w-100"
                     >
                       <Field
+                        required
                         type="text"
                         name="username"
                         className="form-control d-block mb-3"
                         placeholder={t('logIn.form.placeholders.username')}
                       />
                       <Field
+                        required
                         type="password"
                         name="password"
                         className="form-control mb-3"
