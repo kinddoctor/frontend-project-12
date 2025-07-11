@@ -64,16 +64,24 @@ function LoginForm() {
                         required
                         type="text"
                         name="username"
+                        id="username"
                         className="form-control d-block mb-3"
                         placeholder={t('logIn.form.placeholders.username')}
                       />
+                      <label className="visually-hidden" htmlFor="username">
+                        {t('logIn.form.placeholders.username')}
+                      </label>
                       <Field
                         required
                         type="password"
                         name="password"
+                        id="password"
                         className="form-control mb-3"
                         placeholder={t('logIn.form.placeholders.password')}
                       />
+                      <label className="visually-hidden" htmlFor="password">
+                        {t('logIn.form.placeholders.password')}
+                      </label>
                       {giveFeedBackIfError()}
                       <button
                         type="submit"

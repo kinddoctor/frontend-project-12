@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -139,6 +140,7 @@ function ChatPage() {
                       >
                         <li>
                           <a
+                            href="#"
                             onClick={() => setShowModal('deleteChannelModal')}
                             role="button"
                             className="dropdown-item"
@@ -148,6 +150,7 @@ function ChatPage() {
                         </li>
                         <li>
                           <a
+                            href="#"
                             onClick={() => setShowModal('renameChannelModal')}
                             role="button"
                             className="dropdown-item"

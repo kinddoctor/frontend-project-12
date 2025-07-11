@@ -81,27 +81,39 @@ export default function SignUp() {
                       <Field
                         type="text"
                         name="username"
+                        id="username"
                         className="form-control d-block"
                         placeholder={t('signUp.form.placeholders.username')}
                       />
+                      <label className="visually-hidden" htmlFor="username">
+                        {t('signUp.form.placeholders.username')}
+                      </label>
                       {errors.username && touched.username ? (
                         <div className="text-danger mt-n3">{errors.username}</div>
                       ) : null}
                       <Field
                         type="password"
                         name="password"
+                        id="password"
                         className="form-control"
                         placeholder={t('signUp.form.placeholders.password')}
                       />
+                      <label className="visually-hidden" htmlFor="password">
+                        {t('signUp.form.placeholders.password')}
+                      </label>
                       {errors.password && touched.password ? (
                         <div className="text-danger">{errors.password}</div>
                       ) : null}
                       <Field
                         type="password"
                         name="re_password"
+                        id="re_password"
                         className="form-control"
                         placeholder={t('signUp.form.placeholders.re_password')}
                       />
+                      <label className="visually-hidden" htmlFor="re_password">
+                        {t('signUp.form.placeholders.re_password')}
+                      </label>
                       {errors.re_password && touched.re_password ? (
                         <div className="text-danger">{errors.re_password}</div>
                       ) : null}
