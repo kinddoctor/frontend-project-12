@@ -1,9 +1,30 @@
+import { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, useField, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import { cleanProfanity } from '../utils/common';
+
+function CustomInput(props) {
+  const { setFieldTouched } = useFormikContext();
+  const [field] = useField(props);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const setUntouched = async () => setFieldTouched(props.name, false, false);
+    inputRef.current?.focus();
+
+    try {
+      setUntouched();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return <input ref={inputRef} {...props} {...field} />;
+}
 
 export default function AppModal({
   showModal,
@@ -46,9 +67,9 @@ export default function AppModal({
             >
               {({ errors, touched, isSubmitting }) => (
                 <Form>
-                  <Field name="channelName" className="form-control" />
+                  <CustomInput name="channelName" className="form-control" />
                   {showModal === 'addChannelModal' ? (
-                    <label class="visually-hidden" for="name">
+                    <label className="visually-hidden" htmlFor="name">
                       Имя канала
                     </label>
                   ) : (
