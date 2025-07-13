@@ -37,10 +37,10 @@ export default function AppModal({
 
   const SignupSchema = Yup.object().shape({
     channelName: Yup.string()
-      .min(3, 'Слишком короткое название!')
-      .max(20, 'Слишком длинное название!')
-      .notOneOf(channelsNames, 'Такой канал уже существует!')
-      .required('Введите название канала'),
+      .min(3, 'От 3 до 20 символов')
+      .max(20, 'От 3 до 20 символов')
+      .notOneOf(channelsNames, 'Должно быть уникальным')
+      .required('Обязательное поле'),
   });
 
   return (
