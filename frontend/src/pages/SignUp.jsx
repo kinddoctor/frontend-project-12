@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable consistent-return */
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +41,7 @@ export default function SignUp() {
 
   const giveFeedBackIfError = () => {
     if (!authorizationError) {
-      return;
+      return null;
     }
     switch (authorizationError.message) {
       case 'Request failed with status code 409':
@@ -134,7 +132,7 @@ export default function SignUp() {
               <p className="mb-1 fs-5">
                 {t('signUp.footer.text')}
                 <a
-                  href="#"
+                  href="/login"
                   onClick={() => {
                     clearAuthorizationError();
                     navigate('/login');

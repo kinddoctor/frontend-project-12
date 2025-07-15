@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable consistent-return */
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +25,7 @@ function LoginForm() {
 
   const giveFeedBackIfError = () => {
     if (!authorizationError) {
-      return;
+      return null;
     }
     switch (authorizationError.message) {
       case 'Request failed with status code 401':

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { io } from 'socket.io-client';
 
@@ -93,11 +94,6 @@ socket.on('connect', () => {
 socket.on('disconnect', () => {
   console.log('disconnected to server');
 });
-
-// socket.on('newMessage', () => {
-//   console.log(api.endpoints.getMessages);
-//   api.endpoints.getMessages.initiate();
-// });
 
 export const {
   useGetChannelsQuery,

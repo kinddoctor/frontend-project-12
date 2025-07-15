@@ -2,7 +2,9 @@ import { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { Formik, Form, useField, useFormikContext } from 'formik';
+import {
+  Formik, Form, useField, useFormikContext,
+} from 'formik';
 import * as Yup from 'yup';
 import { cleanProfanity } from '../utils/common';
 
@@ -12,7 +14,8 @@ function CustomInput(props) {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    const setUntouched = async () => setFieldTouched(props.name, false, false);
+    const { name } = props;
+    const setUntouched = async () => setFieldTouched(name, false, false);
     inputRef.current?.focus();
 
     try {
@@ -57,10 +60,9 @@ export default function AppModal({
               }}
               validationSchema={SignupSchema}
               onSubmit={(values) => {
-                const data =
-                  showModal === 'addChannelModal'
-                    ? { name: cleanProfanity(values.channelName) }
-                    : { name: cleanProfanity(values.channelName), id: optionsChannelId };
+                const data = showModal === 'addChannelModal'
+                  ? { name: cleanProfanity(values.channelName) }
+                  : { name: cleanProfanity(values.channelName), id: optionsChannelId };
                 handleModalAction(data);
                 handleClose();
               }}

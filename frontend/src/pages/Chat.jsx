@@ -47,8 +47,9 @@ function ChatPage() {
   const [showChannelOptions, setShowChannelOptions] = useState(null);
 
   const getActiveChannel = () => channels?.filter((chan) => chan.id === activeChannelId)[0];
-  const getActiveChannelMessages = () =>
-    messages?.filter(({ channelId }) => channelId === activeChannelId);
+  const getActiveChannelMessages = () => messages?.filter(
+    ({ channelId }) => channelId === activeChannelId,
+  );
 
   // set default channel for first render and when active channel was deleted
   // make newly added channel the active one
