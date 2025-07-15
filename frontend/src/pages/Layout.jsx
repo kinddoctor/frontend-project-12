@@ -1,11 +1,11 @@
-import { useSelector } from 'react-redux';
-import { Outlet } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import AppHeader from '../components/AppHeader';
-import selectors from '../store/selectors';
+import { useSelector } from 'react-redux'
+import { Outlet } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import AppHeader from '../components/AppHeader'
+import selectors from '../store/selectors'
 
 export default function Layout() {
-  const authorized = useSelector(selectors.getAuthorizationToken);
+  const authorized = useSelector(selectors.getAuthorizationToken)
 
   return (
     <div className="h-100 d-flex flex-column">
@@ -13,5 +13,5 @@ export default function Layout() {
       <Outlet />
       <ToastContainer />
     </div>
-  );
+  )
 }

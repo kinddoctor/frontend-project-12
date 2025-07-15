@@ -1,12 +1,12 @@
-import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import { signupRequest, setError } from '../store/authSlice';
-import selectors from '../store/selectors';
-import book from '../assets/img/book.jpeg';
+import { useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { Formik, Form, Field } from 'formik'
+import * as Yup from 'yup'
+import { signupRequest, setError } from '../store/authSlice'
+import selectors from '../store/selectors'
+import book from '../assets/img/book.jpeg'
 
 const schema = Yup.object().shape({
   username: Yup.string()
@@ -21,27 +21,27 @@ const schema = Yup.object().shape({
       'Пароли должны совпадать',
       (value, context) => value === context.parent.password,
     ),
-});
+})
 
 export default function SignUp() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  const authorizationError = useSelector(selectors.getAuthorizationError);
-  const clearAuthorizationError = () => dispatch(setError(''));
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+  const authorizationError = useSelector(selectors.getAuthorizationError)
+  const clearAuthorizationError = () => dispatch(setError(''))
 
   const handleSubmit = async (values) => {
     await dispatch(signupRequest(values))
       .unwrap()
       .then(() => {
-        clearAuthorizationError();
-        navigate('/');
-      });
-  };
+        clearAuthorizationError()
+        navigate('/')
+      })
+  }
 
   const giveFeedBackIfError = () => {
     if (!authorizationError) {
-      return null;
+      return null
     }
     switch (authorizationError.message) {
       case 'Request failed with status code 409':
@@ -49,11 +49,11 @@ export default function SignUp() {
           <div className="alert alert-danger text-center p-2" role="alert">
             {t('errors.signupError')}
           </div>
-        );
+        )
       default:
-        return toast(t('toast.error.badNetwork'), { type: 'error' });
+        return toast(t('toast.error.badNetwork'), { type: 'error' })
     }
-  };
+  }
 
   return (
     <div className="container-fluid h-100">
@@ -86,9 +86,11 @@ export default function SignUp() {
                       <label className="visually-hidden" htmlFor="username">
                         {t('signUp.form.placeholders.username')}
                       </label>
-                      {errors.username && touched.username ? (
-                        <div className="text-danger mt-n3">{errors.username}</div>
-                      ) : null}
+                      {errors.username && touched.username
+                        ? (
+                            <div className="text-danger mt-n3">{errors.username}</div>
+                          )
+                        : null}
                       <Field
                         type="password"
                         name="password"
@@ -99,9 +101,11 @@ export default function SignUp() {
                       <label className="visually-hidden" htmlFor="password">
                         {t('signUp.form.placeholders.password')}
                       </label>
-                      {errors.password && touched.password ? (
-                        <div className="text-danger">{errors.password}</div>
-                      ) : null}
+                      {errors.password && touched.password
+                        ? (
+                            <div className="text-danger">{errors.password}</div>
+                          )
+                        : null}
                       <Field
                         type="password"
                         name="re_password"
@@ -112,9 +116,11 @@ export default function SignUp() {
                       <label className="visually-hidden" htmlFor="re_password">
                         {t('signUp.form.placeholders.re_password')}
                       </label>
-                      {errors.re_password && touched.re_password ? (
-                        <div className="text-danger">{errors.re_password}</div>
-                      ) : null}
+                      {errors.re_password && touched.re_password
+                        ? (
+                            <div className="text-danger">{errors.re_password}</div>
+                          )
+                        : null}
                       {giveFeedBackIfError()}
                       <button
                         type="submit"
@@ -134,8 +140,8 @@ export default function SignUp() {
                 <a
                   href="/login"
                   onClick={() => {
-                    clearAuthorizationError();
-                    navigate('/login');
+                    clearAuthorizationError()
+                    navigate('/login')
                   }}
                   className="text-info"
                 >
@@ -147,5 +153,5 @@ export default function SignUp() {
         </div>
       </div>
     </div>
-  );
+  )
 }

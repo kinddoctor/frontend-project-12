@@ -1,8 +1,7 @@
-/* eslint-disable no-param-reassign */
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { io } from 'socket.io-client';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { io } from 'socket.io-client'
 
-const socket = io();
+const socket = io()
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -10,42 +9,42 @@ export const api = createApi({
     prepareHeaders: (headers, { getState }) => {
       const {
         data: { token },
-      } = getState().auth;
+      } = getState().auth
       if (token) {
-        headers.set('authorization', `Bearer ${token}`);
+        headers.set('authorization', `Bearer ${token}`)
       }
-      return headers;
+      return headers
     },
   }),
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getChannels: builder.query({
       query: () => 'channels',
       async onCacheEntryAdded(arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
-        await cacheDataLoaded;
+        await cacheDataLoaded
         socket.on('newChannel', (payload) => {
           updateCachedData((draft) => {
-            draft.push(payload);
-          });
-        });
+            draft.push(payload)
+          })
+        })
         socket.on('removeChannel', ({ id }) => {
           updateCachedData((draft) => {
-            const itemToRemove = draft.findIndex((item) => item.id === id);
-            draft.splice(itemToRemove, 1);
-          });
-        });
+            const itemToRemove = draft.findIndex(item => item.id === id)
+            draft.splice(itemToRemove, 1)
+          })
+        })
         socket.on('renameChannel', (payload) => {
           updateCachedData((draft) => {
-            const itemToRename = draft.find((item) => item.id === payload.id);
-            const itemToRenameIndex = draft.indexOf(itemToRename);
-            draft[itemToRenameIndex] = { ...itemToRename, name: payload.name };
-          });
-        });
-        await cacheEntryRemoved;
-        socket.disconnect();
+            const itemToRename = draft.find(item => item.id === payload.id)
+            const itemToRenameIndex = draft.indexOf(itemToRename)
+            draft[itemToRenameIndex] = { ...itemToRename, name: payload.name }
+          })
+        })
+        await cacheEntryRemoved
+        socket.disconnect()
       },
     }),
     addChannel: builder.mutation({
-      query: (channel) => ({
+      query: channel => ({
         url: 'channels',
         method: 'POST',
         body: channel,
@@ -59,7 +58,7 @@ export const api = createApi({
       }),
     }),
     deleteChannel: builder.mutation({
-      query: (id) => ({
+      query: id => ({
         url: `channels/${id}`,
         method: 'DELETE',
       }),
@@ -67,33 +66,33 @@ export const api = createApi({
     getMessages: builder.query({
       query: () => 'messages',
       async onCacheEntryAdded(arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
-        await cacheDataLoaded;
+        await cacheDataLoaded
         socket.on('newMessage', (payload) => {
           updateCachedData((draft) => {
-            draft.push(payload);
-          });
-        });
-        await cacheEntryRemoved;
-        socket.disconnect();
+            draft.push(payload)
+          })
+        })
+        await cacheEntryRemoved
+        socket.disconnect()
       },
     }),
     sendMessage: builder.mutation({
-      query: (message) => ({
+      query: message => ({
         url: 'messages',
         method: 'POST',
         body: message,
       }),
     }),
   }),
-});
+})
 
 socket.on('connect', () => {
-  console.log('connected to server');
-});
+  console.log('connected to server')
+})
 
 socket.on('disconnect', () => {
-  console.log('disconnected to server');
-});
+  console.log('disconnected to server')
+})
 
 export const {
   useGetChannelsQuery,
@@ -102,4 +101,4 @@ export const {
   useDeleteChannelMutation,
   useGetMessagesQuery,
   useSendMessageMutation,
-} = api;
+} = api

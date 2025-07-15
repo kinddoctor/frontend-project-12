@@ -1,21 +1,21 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Provider, ErrorBoundary, LEVEL_WARN } from '@rollbar/react';
-import { useTranslation } from 'react-i18next';
-import Layout from './pages/Layout';
-import LogIn from './pages/LogIn';
-import SignUp from './pages/SignUp';
-import Chat from './pages/Chat';
-import NotFound from './pages/NotFound';
-import './styles.scss';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Provider, ErrorBoundary, LEVEL_WARN } from '@rollbar/react'
+import { useTranslation } from 'react-i18next'
+import Layout from './pages/Layout'
+import LogIn from './pages/LogIn'
+import SignUp from './pages/SignUp'
+import Chat from './pages/Chat'
+import NotFound from './pages/NotFound'
+import './styles.scss'
 
 const rollbarConfig = {
   accessToken: import.meta.env.VITE_ROLLBAR_TOKEN,
   captureUncaught: true,
   captureUnhandledRejections: true,
-};
+}
 
 function ErrorDisplay({ resetError }) {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <div className="h-100 d-flex flex-column justify-content-center">
@@ -27,7 +27,7 @@ function ErrorDisplay({ resetError }) {
         </button>
       </div>
     </div>
-  );
+  )
 }
 
 function App() {
@@ -46,7 +46,7 @@ function App() {
         </BrowserRouter>
       </ErrorBoundary>
     </Provider>
-  );
+  )
 }
 
-export default App;
+export default App

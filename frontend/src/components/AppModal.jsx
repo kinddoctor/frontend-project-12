@@ -1,32 +1,27 @@
-import { useRef, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { useRef, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 import {
   Formik, Form, useField, useFormikContext,
-} from 'formik';
-import * as Yup from 'yup';
-import { cleanProfanity } from '../utils/common';
+} from 'formik'
+import * as Yup from 'yup'
+import { cleanProfanity } from '../utils/common'
 
 function CustomInput(props) {
-  const { setFieldTouched } = useFormikContext();
-  const [field] = useField(props);
-  const inputRef = useRef(null);
+  const { setFieldTouched } = useFormikContext()
+  const [field] = useField(props)
+  const inputRef = useRef(null)
 
   useEffect(() => {
-    const { name } = props;
-    const setUntouched = async () => setFieldTouched(name, false, false);
-    inputRef.current?.focus();
+    const { name } = props
+    const setUntouched = async () => setFieldTouched(name, false, false)
 
-    try {
-      setUntouched();
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+    inputRef.current?.focus()
+    setUntouched()
+  }, [])
 
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  return <input ref={inputRef} {...props} {...field} />;
+  return <input ref={inputRef} {...props} {...field} />
 }
 
 export default function AppModal({
@@ -36,7 +31,7 @@ export default function AppModal({
   handleModalAction,
   channelsNames = [],
 }) {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   const SignupSchema = Yup.object().shape({
     channelName: Yup.string()
@@ -44,7 +39,7 @@ export default function AppModal({
       .max(20, 'От 3 до 20 символов')
       .notOneOf(channelsNames, 'Должно быть уникальным')
       .required('Обязательное поле'),
-  });
+  })
 
   return (
     <Modal show={showModal} onHide={handleClose} centered>
@@ -52,65 +47,71 @@ export default function AppModal({
         <Modal.Title>{t(`modal.${showModal}.title`)}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {showModal === 'addChannelModal' || showModal === 'renameChannelModal' ? (
-          <div>
-            <Formik
-              initialValues={{
-                channelName: '',
-              }}
-              validationSchema={SignupSchema}
-              onSubmit={(values) => {
-                const data = showModal === 'addChannelModal'
-                  ? { name: cleanProfanity(values.channelName) }
-                  : { name: cleanProfanity(values.channelName), id: optionsChannelId };
-                handleModalAction(data);
-                handleClose();
-              }}
-            >
-              {({ errors, touched, isSubmitting }) => (
-                <Form>
-                  <CustomInput id="channelName" name="channelName" className="form-control" />
-                  <label className="visually-hidden" htmlFor="channelName">
-                    Имя канала
-                  </label>
-                  {errors.channelName && touched.channelName ? (
-                    <div className="text-danger">{errors.channelName}</div>
-                  ) : null}
-                  <div className="d-flex justify-content-end gap-3 pt-4">
-                    <button type="submit" disabled={isSubmitting} className="btn btn-primary">
-                      {t('modal.sendBtn')}
-                    </button>
-                    <button type="button" className="btn btn-secondary" onClick={handleClose}>
-                      {t('modal.closeBtn')}
-                    </button>
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          </div>
-        ) : (
-          <div className="text-center fs-5">{t(`modal.${showModal}.warning`)}</div>
-        )}
+        {showModal === 'addChannelModal' || showModal === 'renameChannelModal'
+          ? (
+              <div>
+                <Formik
+                  initialValues={{
+                    channelName: '',
+                  }}
+                  validationSchema={SignupSchema}
+                  onSubmit={(values) => {
+                    const data = showModal === 'addChannelModal'
+                      ? { name: cleanProfanity(values.channelName) }
+                      : { name: cleanProfanity(values.channelName), id: optionsChannelId }
+                    handleModalAction(data)
+                    handleClose()
+                  }}
+                >
+                  {({ errors, touched, isSubmitting }) => (
+                    <Form>
+                      <CustomInput id="channelName" name="channelName" className="form-control" />
+                      <label className="visually-hidden" htmlFor="channelName">
+                        Имя канала
+                      </label>
+                      {errors.channelName && touched.channelName
+                        ? (
+                            <div className="text-danger">{errors.channelName}</div>
+                          )
+                        : null}
+                      <div className="d-flex justify-content-end gap-3 pt-4">
+                        <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+                          {t('modal.sendBtn')}
+                        </button>
+                        <button type="button" className="btn btn-secondary" onClick={handleClose}>
+                          {t('modal.closeBtn')}
+                        </button>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            )
+          : (
+              <div className="text-center fs-5">{t(`modal.${showModal}.warning`)}</div>
+            )}
       </Modal.Body>
 
-      {showModal === 'deleteChannelModal' ? (
-        <Modal.Footer>
-          <Button
-            variant="danger"
-            onClick={(e) => {
-              e.target.setAttribute('disabled', '');
-              handleModalAction(optionsChannelId);
-              e.target.removeAttribute('disabled', '');
-              handleClose();
-            }}
-          >
-            {t('modal.deleteBtn')}
-          </Button>
-          <Button variant="secondary" onClick={handleClose}>
-            {t('modal.closeBtn')}
-          </Button>
-        </Modal.Footer>
-      ) : null}
+      {showModal === 'deleteChannelModal'
+        ? (
+            <Modal.Footer>
+              <Button
+                variant="danger"
+                onClick={(e) => {
+                  e.target.setAttribute('disabled', '')
+                  handleModalAction(optionsChannelId)
+                  e.target.removeAttribute('disabled', '')
+                  handleClose()
+                }}
+              >
+                {t('modal.deleteBtn')}
+              </Button>
+              <Button variant="secondary" onClick={handleClose}>
+                {t('modal.closeBtn')}
+              </Button>
+            </Modal.Footer>
+          )
+        : null}
     </Modal>
-  );
+  )
 }

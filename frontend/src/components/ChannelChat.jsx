@@ -1,7 +1,7 @@
-import { useRef, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { cleanProfanity } from '../utils/common';
+import { useRef, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { cleanProfanity } from '../utils/common'
 
 export default function ChannelChat({
   currentUser,
@@ -10,15 +10,15 @@ export default function ChannelChat({
   messages = [],
   sendMessage,
 }) {
-  const { t } = useTranslation();
-  const inputRef = useRef(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useTranslation()
+  const inputRef = useRef(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     if (inputRef) {
-      inputRef.current.focus();
+      inputRef.current.focus()
     }
-  }, [channelName]);
+  }, [channelName])
 
   return (
     <div className="d-flex flex-column h-100">
@@ -37,18 +37,18 @@ export default function ChannelChat({
       <div className="mt-auto px-5 py-3">
         <form
           onSubmit={(e) => {
-            e.preventDefault();
-            setIsSubmitting(true);
+            e.preventDefault()
+            setIsSubmitting(true)
             const newMessage = {
               body: cleanProfanity(inputRef.current.value),
               channelId,
               username: currentUser,
-            };
+            }
             sendMessage(newMessage)
               .unwrap()
-              .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }));
-            inputRef.current.value = '';
-            setIsSubmitting(false);
+              .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }))
+            inputRef.current.value = ''
+            setIsSubmitting(false)
           }}
           className="input-group"
         >
@@ -64,5 +64,5 @@ export default function ChannelChat({
         </form>
       </div>
     </div>
-  );
+  )
 }

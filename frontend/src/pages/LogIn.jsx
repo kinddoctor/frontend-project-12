@@ -1,31 +1,31 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { Formik, Form, Field } from 'formik';
-import { loginRequest, setError } from '../store/authSlice';
-import selectors from '../store/selectors';
-import discussionImg from '../assets/img/discussionImg.png';
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { Formik, Form, Field } from 'formik'
+import { loginRequest, setError } from '../store/authSlice'
+import selectors from '../store/selectors'
+import discussionImg from '../assets/img/discussionImg.png'
 
 function LoginForm() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  const authorizationError = useSelector(selectors.getAuthorizationError);
-  const clearAuthorizationError = () => dispatch(setError(''));
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+  const authorizationError = useSelector(selectors.getAuthorizationError)
+  const clearAuthorizationError = () => dispatch(setError(''))
 
   const handleSubmit = async (values) => {
     await dispatch(loginRequest(values))
       .unwrap()
       .then(() => {
-        clearAuthorizationError();
-        navigate('/');
-      });
-  };
+        clearAuthorizationError()
+        navigate('/')
+      })
+  }
 
   const giveFeedBackIfError = () => {
     if (!authorizationError) {
-      return null;
+      return null
     }
     switch (authorizationError.message) {
       case 'Request failed with status code 401':
@@ -33,11 +33,11 @@ function LoginForm() {
           <div className="alert alert-danger text-center p-2" role="alert">
             {t('errors.authorizationError')}
           </div>
-        );
+        )
       default:
-        return toast(t('toast.error.badNetwork'), { type: 'error' });
+        return toast(t('toast.error.badNetwork'), { type: 'error' })
     }
-  };
+  }
 
   return (
     <div className="container-fluid h-100">
@@ -96,8 +96,8 @@ function LoginForm() {
                 {t('logIn.footer.text')}
                 <a
                   onClick={() => {
-                    clearAuthorizationError();
-                    navigate('/signup');
+                    clearAuthorizationError()
+                    navigate('/signup')
                   }}
                   className="text-info"
                   href="/signup"
@@ -110,7 +110,7 @@ function LoginForm() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default LoginForm;
+export default LoginForm

@@ -1,11 +1,10 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { setData } from '../store/authSlice';
-import selectors from '../store/selectors';
+import { useState, useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { setData } from '../store/authSlice'
+import selectors from '../store/selectors'
 import {
   useGetChannelsQuery,
   useRenameChannelMutation,
@@ -13,82 +12,81 @@ import {
   useAddChannelMutation,
   useGetMessagesQuery,
   useSendMessageMutation,
-} from '../store/api';
-import ChannelChat from '../components/ChannelChat';
-import AppModal from '../components/AppModal';
+} from '../store/api'
+import ChannelChat from '../components/ChannelChat'
+import AppModal from '../components/AppModal'
 
 function ChatPage() {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const token = localStorage.getItem('ChattyChat token');
+  const token = localStorage.getItem('ChattyChat token')
   if (!token) {
     useEffect(() => {
-      navigate('/login');
-    });
-  } else {
-    const currentUsername = localStorage.getItem('ChattyChat username');
-    dispatch(setData({ token, username: currentUsername }));
+      navigate('/login')
+    })
+  }
+  else {
+    const currentUsername = localStorage.getItem('ChattyChat username')
+    dispatch(setData({ token, username: currentUsername }))
   }
 
-  const [sendMessage] = useSendMessageMutation();
-  const [addChannel] = useAddChannelMutation();
-  const [renameChannel] = useRenameChannelMutation();
-  const [deleteChannel] = useDeleteChannelMutation();
-  const { data: channels } = useGetChannelsQuery();
-  const { data: messages } = useGetMessagesQuery();
-  const username = useSelector(selectors.getUsername);
+  const [sendMessage] = useSendMessageMutation()
+  const [addChannel] = useAddChannelMutation()
+  const [renameChannel] = useRenameChannelMutation()
+  const [deleteChannel] = useDeleteChannelMutation()
+  const { data: channels } = useGetChannelsQuery()
+  const { data: messages } = useGetMessagesQuery()
+  const username = useSelector(selectors.getUsername)
 
-  const [activeChannelId, setActiveChannelId] = useState(null);
-  const newAddedChannelName = useRef(null);
-  const [showModal, setShowModal] = useState(null);
-  const handleCloseModal = () => setShowModal(null);
-  const [showChannelOptions, setShowChannelOptions] = useState(null);
+  const [activeChannelId, setActiveChannelId] = useState(null)
+  const newAddedChannelName = useRef(null)
+  const [showModal, setShowModal] = useState(null)
+  const handleCloseModal = () => setShowModal(null)
+  const [showChannelOptions, setShowChannelOptions] = useState(null)
 
-  const getActiveChannel = () => channels?.filter((chan) => chan.id === activeChannelId)[0];
+  const getActiveChannel = () => channels?.filter(chan => chan.id === activeChannelId)[0]
   const getActiveChannelMessages = () => messages?.filter(
     ({ channelId }) => channelId === activeChannelId,
-  );
+  )
 
   // set default channel for first render and when active channel was deleted
   // make newly added channel the active one
   useEffect(() => {
     if ((!activeChannelId || !getActiveChannel()) && channels) {
-      const defaultActiveChannelId = channels.filter((chan) => chan.name === 'general')[0].id;
-      setActiveChannelId(defaultActiveChannelId);
+      const defaultActiveChannelId = channels.filter(chan => chan.name === 'general')[0].id
+      setActiveChannelId(defaultActiveChannelId)
     }
     if (newAddedChannelName.current) {
-      const newActiveChannelId = channels.filter(
-        (chan) => chan.name === newAddedChannelName.current,
-      )[0].id;
-      setActiveChannelId(newActiveChannelId);
-      newAddedChannelName.current = null;
+      const newActiveChannelId = channels.filter(chan => chan.name === newAddedChannelName.current)[0].id
+      setActiveChannelId(newActiveChannelId)
+      newAddedChannelName.current = null
     }
-  }, [channels]);
+  }, [channels])
 
-  const chooseModalAction = (modal) => (data) => {
+  const chooseModalAction = modal => (data) => {
     switch (modal) {
       case 'addChannelModal':
-        newAddedChannelName.current = data.name;
+        newAddedChannelName.current = data.name
         return addChannel(data)
           .unwrap()
           .then(() => toast(t('toast.success.addChannel'), { type: 'success' }))
-          .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }));
+          .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }))
       case 'renameChannelModal':
         return renameChannel(data)
           .unwrap()
           .then(() => toast(t('toast.success.renameChannel'), { type: 'success' }))
-          .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }));
+          .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }))
       case 'deleteChannelModal':
         return deleteChannel(data)
           .unwrap()
           .then(() => toast(t('toast.success.deleteChannel'), { type: 'success' }))
-          .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }));
+          .catch(() => toast(t('toast.error.badNetwork'), { type: 'error' }))
       default:
-        throw new Error('There is no modal action for these case!');
+        throw new Error('There is no modal action for these case!')
     }
-  };
+  }
 
   return (
     <div className="container h-100 my-5 border shadow overflow-hidden">
@@ -105,63 +103,65 @@ function ChatPage() {
             </button>
           </div>
           <ul className="nav d-block flex-column overflow-auto h-100">
-            {channels?.map((channel) => (
+            {channels?.map(channel => (
               <li className="nav-item" key={channel.id}>
                 <div className="d-flex dropdown btn-group">
                   <button
                     onClick={() => {
-                      setActiveChannelId(channel.id);
-                      setShowChannelOptions(null);
+                      setActiveChannelId(channel.id)
+                      setShowChannelOptions(null)
                     }}
                     type="button"
                     className={`w-100 fs-6 fw-normal text-start text-break btn border-0 ${channel.id === activeChannelId ? 'btn-dark' : ''}`}
                   >
                     {`# ${channel.name}`}
                   </button>
-                  {channel.removable ? (
-                    <>
-                      <button
-                        onClick={() => {
-                          const areThisChannelOptionsShowing = showChannelOptions === channel.id;
-                          return areThisChannelOptionsShowing
-                            ? setShowChannelOptions(null)
-                            : setShowChannelOptions(channel.id);
-                        }}
-                        type="button"
-                        className={`btn dropdown-toggle dropdown-toggle-split ${showChannelOptions === channel.id ? 'btn-outline-dark' : ''}`}
-                      >
-                        <span className="visually-hidden">Управление каналом</span>
-                      </button>
-                      <ul
-                        className={`dropdown-menu ${showChannelOptions === channel.id ? 'show' : ''} `}
-                        style={{
-                          position: 'absolute',
-                          inset: '40px 0px auto auto',
-                        }}
-                      >
-                        <li>
-                          <a
-                            href="#"
-                            onClick={() => setShowModal('deleteChannelModal')}
-                            role="button"
-                            className="dropdown-item"
+                  {channel.removable
+                    ? (
+                        <>
+                          <button
+                            onClick={() => {
+                              const areThisChannelOptionsShowing = showChannelOptions === channel.id
+                              return areThisChannelOptionsShowing
+                                ? setShowChannelOptions(null)
+                                : setShowChannelOptions(channel.id)
+                            }}
+                            type="button"
+                            className={`btn dropdown-toggle dropdown-toggle-split ${showChannelOptions === channel.id ? 'btn-outline-dark' : ''}`}
                           >
-                            {t('chat.navbar.dropdown.delete')}
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            onClick={() => setShowModal('renameChannelModal')}
-                            role="button"
-                            className="dropdown-item"
+                            <span className="visually-hidden">Управление каналом</span>
+                          </button>
+                          <ul
+                            className={`dropdown-menu ${showChannelOptions === channel.id ? 'show' : ''} `}
+                            style={{
+                              position: 'absolute',
+                              inset: '40px 0px auto auto',
+                            }}
                           >
-                            {t('chat.navbar.dropdown.rename')}
-                          </a>
-                        </li>
-                      </ul>
-                    </>
-                  ) : null}
+                            <li>
+                              <a
+                                href="#"
+                                onClick={() => setShowModal('deleteChannelModal')}
+                                role="button"
+                                className="dropdown-item"
+                              >
+                                {t('chat.navbar.dropdown.delete')}
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                href="#"
+                                onClick={() => setShowModal('renameChannelModal')}
+                                role="button"
+                                className="dropdown-item"
+                              >
+                                {t('chat.navbar.dropdown.rename')}
+                              </a>
+                            </li>
+                          </ul>
+                        </>
+                      )
+                    : null}
                 </div>
               </li>
             ))}
@@ -177,20 +177,22 @@ function ChatPage() {
           />
         </div>
       </div>
-      {showModal ? (
-        <AppModal
-          showModal={showModal}
-          optionsChannelId={showChannelOptions}
-          handleClose={() => {
-            setShowChannelOptions(null);
-            handleCloseModal();
-          }}
-          handleModalAction={chooseModalAction(showModal)}
-          channelsNames={channels?.map(({ name }) => name)}
-        />
-      ) : null}
+      {showModal
+        ? (
+            <AppModal
+              showModal={showModal}
+              optionsChannelId={showChannelOptions}
+              handleClose={() => {
+                setShowChannelOptions(null)
+                handleCloseModal()
+              }}
+              handleModalAction={chooseModalAction(showModal)}
+              channelsNames={channels?.map(({ name }) => name)}
+            />
+          )
+        : null}
     </div>
-  );
+  )
 }
 
-export default ChatPage;
+export default ChatPage
