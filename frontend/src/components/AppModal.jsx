@@ -68,13 +68,9 @@ export default function AppModal({
               {({ errors, touched, isSubmitting }) => (
                 <Form>
                   <CustomInput id="channelName" name="channelName" className="form-control" />
-                  {showModal === 'addChannelModal' ? (
-                    <label className="visually-hidden" htmlFor="channelName">
-                      Имя канала
-                    </label>
-                  ) : (
-                    ''
-                  )}
+                  <label className="visually-hidden" htmlFor="channelName">
+                    Имя канала
+                  </label>
                   {errors.channelName && touched.channelName ? (
                     <div className="text-danger">{errors.channelName}</div>
                   ) : null}
