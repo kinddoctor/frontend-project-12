@@ -38,6 +38,9 @@ export default function ChannelChat({
         <form
           onSubmit={(e) => {
             e.preventDefault()
+            if (inputRef.current.value === '') {
+              return
+            }
             setIsSubmitting(true)
             const newMessage = {
               body: cleanProfanity(inputRef.current.value),

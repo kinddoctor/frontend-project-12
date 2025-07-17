@@ -21,24 +21,41 @@ function ChatPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const authorized = useSelector(selectors.getAuthorizationToken)
   const token = localStorage.getItem('ChattyChat token')
-  if (!token) {
-    useEffect(() => {
+  const currentUsername = localStorage.getItem('ChattyChat username')
+
+  // if no token at all - redirect, if has token in localStorage - put it in authSlice
+  if (!token && !currentUsername) {
+    if (!authorized) {
       navigate('/login')
-    })
+    }
   }
-  else {
-    const currentUsername = localStorage.getItem('ChattyChat username')
+  else if (token && currentUsername) {
     dispatch(setData({ token, username: currentUsername }))
   }
 
+  // a test query, to see if everything is fine
+  const { data: channels, error: channelsRequestError, refetch: refetchChannels } = useGetChannelsQuery()
+
+  useEffect(() => {
+    if (authorized && channelsRequestError) {
+      const checkThatTokenIsValid = async () => {
+        const response = await refetchChannels()
+        if (response.error?.status === 401) {
+          navigate('/login')
+        }
+      }
+      checkThatTokenIsValid()
+    }
+  }, [authorized, channelsRequestError])
+
+  const { data: messages } = useGetMessagesQuery()
+  const username = useSelector(selectors.getUsername)
   const [sendMessage] = useSendMessageMutation()
   const [addChannel] = useAddChannelMutation()
   const [renameChannel] = useRenameChannelMutation()
   const [deleteChannel] = useDeleteChannelMutation()
-  const { data: channels } = useGetChannelsQuery()
-  const { data: messages } = useGetMessagesQuery()
-  const username = useSelector(selectors.getUsername)
 
   const [activeChannelId, setActiveChannelId] = useState(null)
   const newAddedChannelName = useRef(null)
