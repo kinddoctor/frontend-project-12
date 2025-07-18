@@ -12,6 +12,7 @@ export default function ChannelChat({
 }) {
   const { t } = useTranslation()
   const inputRef = useRef(null)
+  const lastMessageRef = useRef(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
@@ -20,15 +21,21 @@ export default function ChannelChat({
     }
   }, [channelName])
 
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView(false)
+    }
+  }, [messages])
+
   return (
     <div className="d-flex flex-column h-100">
       <div className="p-3 shadow-sm bg-primary-subtle">
         <p className="fw-medium mb-0">{channelName}</p>
         <span>{`${messages.length} сообщений`}</span>
       </div>
-      <div className="p-4 overflow-auto">
-        {messages.map(({ body, username, id }) => (
-          <div key={id} className="text-break">
+      <div className="px-4 pt-4 overflow-auto">
+        {messages.map(({ body, username, id }, index) => (
+          <div ref={index === messages.length - 1 ? lastMessageRef : null} key={id} className="text-break">
             <span className="fw-medium">{`${username}: `}</span>
             {body}
           </div>
